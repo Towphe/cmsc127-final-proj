@@ -13,16 +13,16 @@ class ReportsHandler:
         establishments = pd.read_sql('SELECT * FROM establishment', con=self.db_connection)
         return establishments
     
-    def reviews_for_establishment(self, establishment_id):      #2
-        reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = '{establishment_id}'", con=self.db_connection)
+    def reviews_for_establishment(self, establishment_id:int):      #2
+        reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = {establishment_id}", con=self.db_connection)
         return reviews
     
-    def reviews_for_food_item(self, food_id):      #2
-        reviews = pd.read_sql(f"SELECT * FROM food_review WHERE food_id = '{food_id}'", con=self.db_connection)
+    def reviews_for_food_item(self, food_id:int):      #2
+        reviews = pd.read_sql(f"SELECT * FROM food_review WHERE food_id = {food_id}", con=self.db_connection)
         return reviews
     
-    def food_items_from_establishment(self, establishment_id):      #3
-        foods = pd.read_sql(f"SELECT * FROM food_item WHERE establishment_id = '{establishment_id}' ", con=self.db_connection)
+    def food_items_from_establishment(self, establishment_id:int):      #3
+        foods = pd.read_sql(f"SELECT * FROM food_item WHERE establishment_id = {establishment_id} ", con=self.db_connection)
         return foods
     
     def food_item_from_establishment_from_category(self, establishment_id, category):       #4
@@ -41,19 +41,19 @@ class ReportsHandler:
         establishments = pd.read_sql(f"SELECT * FROM establishment WHERE average_rating >= 4 ORDER BY average_rating DESC")
         return establishments
 
-    def food_items_from_establishment(self, establishment_id): #7
+    def food_items_from_establishment(self, establishment_id:int): #7
         foods = pd.read_sql(f"SELECT * FROM food WHERE establishment_id = {establishment_id} ORDER BY price ", con=self.db_connection)
         return foods
 
     #8
-    def food_items_by_price_range(self, min_price, max_price):
+    def food_items_by_price_range(self, min_price:float, max_price:float):
         foods = pd.read_sql(f"SELECT * FROM food WHERE price BETWEEN {min_price} AND {max_price} ", con=self.db_connection)
         return foods
     
-    def food_by_category(self, category):
+    def food_by_category(self, category:str):
         foods = pd.read_sql(f"SELECT * FROM food WHERE category = '{category}' ", con=self.db_connection)
         return foods
     
-    def food_by_price_range_and_category(self, category, min_price, max_price):
+    def food_by_price_range_and_category(self, category:str, min_price:float, max_price:float):
         foods = pd.read_sql(f"SELECT * FROM food WHERE (category = '{category}' AND (price BETWEEN {min_price} AND {max_price}) ", con=self.db_connection)
         return foods
