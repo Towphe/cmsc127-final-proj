@@ -4,10 +4,10 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
-
 from util.food_handler import FoodHandler
 from util.establishment_handler import EstablishmentHandler
 from util.reports_handler import ReportsHandler
+from util.user_handler import UserHandler
 
 class Repository:
     def __init__(self):
@@ -16,4 +16,4 @@ class Repository:
         self.Food = FoodHandler(db_connection)
         self.Establishment = EstablishmentHandler(db_connection)
         self.Reports = ReportsHandler(db_connection)
-    
+        self.Users = UserHandler(db_connection)
