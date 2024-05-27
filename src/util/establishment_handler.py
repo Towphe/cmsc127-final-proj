@@ -13,13 +13,13 @@ class EstablishmentHandler:
         establishments = pd.read_sql('SELECT * FROM establishment', con=self.db_connection)
         return establishments
     
-    def add_establishment(self, added_by, establishment_name):
+    def add_establishment(self, added_by:str, establishment_name:str):
         with self.db_connection.connect() as con:
             con.execute(text(f"INSERT INTO establishment (added_by, establishment_name) VALUES ('{added_by}', '{establishment_name}') "))
             con.commit()
         return
     
-    def remove_establishment(self, establishment_id):
+    def remove_establishment(self, establishment_id:int):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                              DELETE FROM establishment
@@ -28,7 +28,7 @@ class EstablishmentHandler:
             con.commit()
         return
     
-    def update_establishment(self, establishment_id, establishment_name):
+    def update_establishment(self, establishment_id:int, establishment_name:str):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             UPDATE establishment 
@@ -42,7 +42,7 @@ class EstablishmentHandler:
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             INSERT INTO establishment_review (establishment_id, reviewer_username, content, rating)
-                            VALUES ({establishment_id}, '{reviewer}', '{content}', '{rating}');
+                            VALUES ({establishment_id}, '{reviewer}', '{content}', {rating});
                         '''))
             con.commit()
             con.execute(text(f'''
@@ -50,13 +50,13 @@ class EstablishmentHandler:
                             SET average_rating = (
                                 SELECT AVG(rating) 
                                 FROM establishment_review 
-                                WHERE establishment_id = '{establishment_id}')
-                            WHERE establishment_id = '{establishment_id}';
+                                WHERE establishment_id = {establishment_id})
+                            WHERE establishment_id = {establishment_id};
                              '''))  # this leads to faster reads
             con.commit()
         return
     
-    def get_establishment_reviews(self, establishment_id):
+    def get_establishment_reviews(self, establishment_id:int):
         establishment_reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = '{establishment_id}'", con=self.db_connection)
         return establishment_reviews
     
@@ -64,8 +64,8 @@ class EstablishmentHandler:
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             UPDATE establishment_review 
-                            SET (content = '{content}', rating = '{rating}') 
-                            WHERE review_id = "review_id";
+                            SET (content = '{content}', rating = {rating}) 
+                            WHERE review_id = review_id;
                         '''))
             con.commit()
             con.execute(text(f'''
@@ -73,8 +73,8 @@ class EstablishmentHandler:
                             SET average_rating = (
                                 SELECT AVG(rating) 
                                 FROM establishment_review 
-                                WHERE establishment_id = '{establishment_id}')
-                            WHERE establishment_id = '{establishment_id}';
+                                WHERE establishment_id = {establishment_id})
+                            WHERE establishment_id = {establishment_id};
                              '''))  # this leads to faster reads
             con.commit()
         return
@@ -83,7 +83,7 @@ class EstablishmentHandler:
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             DELETE FROM establishment_review 
-                            WHERE review_id = '{review_id}';
+                            WHERE review_id = {review_id};
                         '''))
             con.commit()
             con.execute(text(f'''
@@ -91,8 +91,8 @@ class EstablishmentHandler:
                             SET average_rating = (
                                 SELECT AVG(rating) 
                                 FROM establishment_review 
-                                WHERE establishment_id = '{establishment_id}')
-                            WHERE establishment_id = '{establishment_id}';
+                                WHERE establishment_id = {establishment_id})
+                            WHERE establishment_id = {establishment_id};
                              '''))
             con.commit()
         return
