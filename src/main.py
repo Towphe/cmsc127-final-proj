@@ -1,17 +1,13 @@
-import dash
-from dash import Dash, html, dcc, callback, Output, Input
 import mariadb
 import sys
+from util.repository import Repository
 
-# initialize app
-app = Dash(__name__, use_pages=True, suppress_callback_exceptions=True)
+repository = Repository()
 
-app.layout = [
-    html.H1(children='Food App', style={'textAlign':'center'}),
-    dash.page_container
-]
-
-# run app
-if __name__ == '__main__':
-    
-    app.run(debug=True)
+is_running = True
+while(is_running):
+    opt = int(input())
+    match opt:
+        case 0:
+            print("...Closing...")
+            is_running = False
