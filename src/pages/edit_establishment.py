@@ -25,7 +25,7 @@ def _content(href:str):
             dcc.Input(id='nef_name', name='nef_name', type='text'),
             html.Br(),
             dcc.Link(
-            html.Button('Edit Establishment', id="edit_establishment_button"),
+                html.Button('Edit Establishment', id="edit_establishment_button"),
             href="/establishments", refresh=True)
         ])
     except:

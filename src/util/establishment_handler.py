@@ -29,12 +29,70 @@ class EstablishmentHandler:
         return
     
     def update_establishment(self, establishment_id, establishment_name):
-        print('goes to update_establishment')
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             UPDATE establishment 
                             SET establishment_name = '{establishment_name}'
                             WHERE establishment_id = {establishment_id};
                         '''))
+            con.commit()
+        return
+    
+    def create_establishment_review(self, establishment_id:int, reviewer:str, content:str, rating:float):
+        with self.db_connection.connect() as con:
+            con.execute(text(f'''
+                            INSERT INTO establishment_review (establishment_id, reviewer_username, content, rating)
+                            VALUES ({establishment_id}, '{reviewer}', '{content}', '{rating}');
+                        '''))
+            con.commit()
+            con.execute(text(f'''
+                            UPDATE establishment 
+                            SET average_rating = (
+                                SELECT AVG(rating) 
+                                FROM establishment_review 
+                                WHERE establishment_id = '{establishment_id}')
+                            WHERE establishment_id = '{establishment_id}';
+                             '''))  # this leads to faster reads
+            con.commit()
+        return
+    
+    def get_establishment_reviews(self, establishment_id):
+        establishment_reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = '{establishment_id}'", con=self.db_connection)
+        return establishment_reviews
+    
+    def update_establishment_review(self, establishment_id:int, content:str, rating:float):
+        with self.db_connection.connect() as con:
+            con.execute(text(f'''
+                            UPDATE establishment_review 
+                            SET (content = '{content}', rating = '{rating}') 
+                            WHERE review_id = "review_id";
+                        '''))
+            con.commit()
+            con.execute(text(f'''
+                            UPDATE establishment 
+                            SET average_rating = (
+                                SELECT AVG(rating) 
+                                FROM establishment_review 
+                                WHERE establishment_id = '{establishment_id}')
+                            WHERE establishment_id = '{establishment_id}';
+                             '''))  # this leads to faster reads
+            con.commit()
+        return
+    
+    def delete_establishment_Review(self, review_id:int, establishment_id:int):
+        with self.db_connection.connect() as con:
+            con.execute(text(f'''
+                            DELETE FROM establishment_review 
+                            WHERE review_id = '{review_id}';
+                        '''))
+            con.commit()
+            con.execute(text(f'''
+                            UPDATE establishment 
+                            SET average_rating = (
+                                SELECT AVG(rating) 
+                                FROM establishment_review 
+                                WHERE establishment_id = '{establishment_id}')
+                            WHERE establishment_id = '{establishment_id}';
+                             '''))
             con.commit()
         return

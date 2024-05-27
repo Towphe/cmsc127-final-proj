@@ -4,7 +4,7 @@ import mariadb
 import sys
 
 # initialize app
-app = Dash(__name__, use_pages=True)
+app = Dash(__name__, use_pages=True, suppress_callback_exceptions=True)
 
 app.layout = [
     html.H1(children='Food App', style={'textAlign':'center'}),
