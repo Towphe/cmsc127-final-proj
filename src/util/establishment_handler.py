@@ -15,7 +15,7 @@ class EstablishmentHandler:
     
     def add_establishment(self, added_by:str, establishment_name:str):
         with self.db_connection.connect() as con:
-            con.execute(text(f"INSERT INTO establishment (added_by, establishment_name) VALUES ('{added_by}', '{establishment_name}') "))
+            con.execute(text(f"INSERT INTO establishment (added_by, establishment_name) VALUES ('{added_by}', '{establishment_name}');"))
             con.commit()
         return
     

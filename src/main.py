@@ -9,13 +9,10 @@ from pages.auth import *
 
 repository = Repository()
 
-def test():
-    print("In callback!")
-
 class app:
     def __init__(self, master: tk.Tk):
         self.master = master
-        self.username = None
+        self.username = "test2"
         self.password = None
         self.home()
     
@@ -50,11 +47,25 @@ class app:
     def establishments(self):
         self.clear_page()
         establishments:pd.DataFrame = repository.Establishment.get_establishments()
-        render_establishments(establishments, self.add_establishment, self.home, self.master)
+        render_establishments(self.username, establishments, self.add_establishment, self.home, self.master, self.edit_establishment, repository, self.clear_page, self.establishments)
     
     def add_establishment(self):
         self.clear_page()
-        render_add_establishment(self.establishments, self.master)
+
+        if self.username == None:
+            self.establishments()
+            return
+
+        render_add_establishment(self.username, self.establishments, repository, self.master, self.establishments)
+    
+    def edit_establishment(self, establishment_id):
+        self.clear_page()
+
+        if self.username == None:
+            self.establishments()
+            return
+
+        render_edit_establishment(establishment_id, self.establishments, repository, self.master, self.establishments)
 
 root = tk.Tk()
 app(root)
