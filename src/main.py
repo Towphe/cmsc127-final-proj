@@ -23,13 +23,29 @@ class app:
         for i in self.master.winfo_children():
             i.destroy()
 
+    def set_user(self, username:str, password:str):
+        self.username = username
+        self.password = password
+        self.home()
+
     def home(self):
         self.clear_page()
-        render_home(self.username, self.establishments, self.signin)
+        print(self.username)
+        render_home(self.username, self.establishments, self.signin, self.signup, self.signout)
 
     def signin(self):
         self.clear_page()
-        render_signin(self.home)
+        render_signin(self.home, repository, self.set_user, self.clear_page)
+    
+    def signup(self):
+        self.clear_page()
+        render_signup(self.home, repository, self.set_user, self.clear_page)
+
+    def signout(self):
+        self.clear_page()
+        self.username = None
+        self.password = None
+        self.home()
 
     def establishments(self):
         self.clear_page()
