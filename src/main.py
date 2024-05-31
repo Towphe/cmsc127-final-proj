@@ -7,6 +7,7 @@ from pages.home import render_home
 from pages.establishments import *
 from pages.auth import *
 from pages.foods import *
+from pages.reports import *
 
 repository = Repository()
 
@@ -28,7 +29,7 @@ class app:
 
     def home(self):
         self.clear_page()
-        render_home(self.username, self.establishments, self.food_items, self.signin, self.signup, self.signout)
+        render_home(self.username, self.establishments, self.food_items, self.signin, self.signup, self.signout, self.reports_root)
 
     def signin(self):
         self.clear_page()
@@ -91,6 +92,11 @@ class app:
             return
         
         render_edit_food_item(food_id, self.food_items, repository, self.master)
+    
+    def reports_root(self):
+        self.clear_page()
+
+        render_reports_root(self.home)
 
 root = tk.Tk()
 app(root)
