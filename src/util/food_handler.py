@@ -10,12 +10,12 @@ class FoodHandler:
         self.db_connection = db_connection
     
     def get_food(self):
-        foods = pd.read_sql('SELECT * FROM food_item', con=self.db_connection)
+        foods = pd.read_sql('SELECT food_id, e.establishment_id, added_by, establishment_name, food_name, price, category, fi.average_rating FROM food_item fi INNER JOIN establishment e ON fi.establishment_id = e.establishment_id;', con=self.db_connection)
         return foods
     
-    def add_food(self, establishment_id:int, food_name:str, price:float):
+    def add_food(self, establishment_id:int, food_name:str, price:float, category:str):
         with self.db_connection.connect() as con:
-            con.execute(text(f"INSERT INTO food_item (establishment_id, food_name, price) VALUES ({establishment_id}, '{food_name}', {float(price)}); "))
+            con.execute(text(f"INSERT INTO food_item (establishment_id, food_name, price, category) VALUES ({establishment_id}, '{food_name}', {price}, '{category}');"))
             con.commit()
         return
     
@@ -25,11 +25,13 @@ class FoodHandler:
             con.commit()
         return
     
-    def update_food(self, food_id:int, food_name:str):
+    def update_food(self, food_id:int, food_name:str, category:str, price:float):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             UPDATE food_item 
-                            SET food_name = '{food_name}'
+                            SET food_name = '{food_name}',
+                                category = '{category}',
+                                price = {price}
                             WHERE food_id = {food_id};
                         '''))
             con.commit()

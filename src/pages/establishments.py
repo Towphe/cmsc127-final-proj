@@ -1,6 +1,5 @@
 import tkinter as tk
 import pandas as pd
-from pandastable import Table, TableModel
 from util.repository import Repository
 
 def render_establishments(username:str, establishments: pd.DataFrame, add_establishment, home, window:tk.Tk, redirect_to_edit_establishment, repository:Repository, clear_page, redirect_to_establishments):
@@ -63,7 +62,7 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
     table.pack()
     add_button.pack()
 
-def render_add_establishment(username:str, establishments:pd.DataFrame, repository:Repository, window:tk.Tk, render_establishments):
+def render_add_establishment(username:str, establishments, repository:Repository, window:tk.Tk, render_establishments):
     def create_establishment():
         establishment_name = establishment_name_entry.get()
         repository.Establishment.add_establishment(username, establishment_name)

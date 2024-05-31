@@ -6,13 +6,14 @@ from util.repository import Repository
 from pages.home import render_home
 from pages.establishments import *
 from pages.auth import *
+from pages.foods import *
 
 repository = Repository()
 
 class app:
     def __init__(self, master: tk.Tk):
         self.master = master
-        self.username = "test2"
+        self.username = "tope"
         self.password = None
         self.home()
     
@@ -27,8 +28,7 @@ class app:
 
     def home(self):
         self.clear_page()
-        print(self.username)
-        render_home(self.username, self.establishments, self.signin, self.signup, self.signout)
+        render_home(self.username, self.establishments, self.food_items, self.signin, self.signup, self.signout)
 
     def signin(self):
         self.clear_page()
@@ -66,6 +66,31 @@ class app:
             return
 
         render_edit_establishment(establishment_id, self.establishments, repository, self.master, self.establishments)
+    
+    def food_items(self):
+        self.clear_page()
+        food_items:pd.DataFrame = repository.Food.get_food()
+        render_foods(self.username, food_items, self.home, self.master, repository, self.clear_page, self.add_food_item, self.edit_food_item, self.food_items)
+    
+    def add_food_item(self):
+        self.clear_page()
+        
+        if self.username == None:
+            self.food_items()
+            return
+        
+        foods:pd.DataFrame = repository.Food.get_food()
+
+        render_add_food_item(self.username, self.food_items, repository, self.master, self.food_items)
+    
+    def edit_food_item(self, food_id):
+        self.clear_page()
+
+        if self.username == None:
+            self.food_items()
+            return
+        
+        render_edit_food_item(food_id, self.food_items, repository, self.master)
 
 root = tk.Tk()
 app(root)
