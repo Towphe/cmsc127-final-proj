@@ -60,12 +60,16 @@ class EstablishmentHandler:
         establishment_reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = '{establishment_id}'", con=self.db_connection)
         return establishment_reviews
     
-    def update_establishment_review(self, establishment_id:int, content:str, rating:float):
+    def get_all_establishment_reviews(self):
+        all_establishment_reviews = pd.read_sql(f"SELECT * FROM establishment_review", con=self.db_connection)
+        return all_establishment_reviews
+    
+    def update_establishment_review(self, review_id:int, establishment_id:int, content:str, rating:float):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             UPDATE establishment_review 
-                            SET (content = '{content}', rating = {rating}) 
-                            WHERE review_id = review_id;
+                            SET content = '{content}', rating = {rating}
+                            WHERE review_id = {review_id};
                         '''))
             con.commit()
             con.execute(text(f'''

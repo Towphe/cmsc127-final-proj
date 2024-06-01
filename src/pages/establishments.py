@@ -2,7 +2,7 @@ import tkinter as tk
 import pandas as pd
 from util.repository import Repository
 
-def render_establishments(username:str, establishments: pd.DataFrame, add_establishment, home, window:tk.Tk, redirect_to_edit_establishment, repository:Repository, clear_page, redirect_to_establishments):
+def render_establishments(username:str, establishments: pd.DataFrame, add_establishment, home, window:tk.Tk, redirect_to_edit_establishment, redirect_to_review_establishment, repository:Repository, clear_page, redirect_to_establishments):
     
     def delete_establishment(establishment_id:int):
         repository.Establishment.remove_establishment(establishment_id)
@@ -34,7 +34,7 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
         average_rating_label = tk.Label(table, text=establishment['average_rating'], anchor="w")
         edit_button = tk.Button(table, text="Edit", anchor="w", command=lambda eid=establishment["establishment_id"]: redirect_to_edit_establishment(eid))
         delete_button = tk.Button(table, text="Delete", anchor="w", command=lambda eid=establishment["establishment_id"]: delete_establishment(eid))
-        review_button = tk.Button(table, text="Review", anchor="w")
+        review_button = tk.Button(table, text="Review", anchor="w", command=lambda eid=establishment["establishment_id"]: redirect_to_review_establishment(eid))
 
         if establishment["added_by"] != username:
             # disable edit/delete when username != current login
@@ -61,6 +61,36 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
     back_button.pack()
     table.pack()
     add_button.pack()
+
+def render_review_establishment (establishment_id:int , username:str, establishments:pd.DataFrame, repository:Repository, window:tk.Tk, render_establishments):
+    def create_establishment_review():
+        content =  establishment_review_content_entry.get()
+        rating =  establishment_review_rating_entry.get()
+
+        repository.Establishment.create_establishment_review(establishment_id, username, content, rating)
+        render_establishments()
+
+
+    title = tk.Label(text="Review Establishment")
+
+    establishment_review_content_label = tk.Label(text="Review")
+    establishment_review_content_entry = tk.Entry()
+    establishment_review_rating_label = tk.Label(text="Rating")
+    establishment_review_rating_entry = tk.Entry()
+
+    back_button = tk.Button(text="Back", command=lambda: establishments())
+    create_review_button = tk.Button(text="Confirm", command=lambda: create_establishment_review())
+
+    title.pack()
+    back_button.pack()
+
+    establishment_review_content_label.pack()
+    establishment_review_content_entry.pack()
+    establishment_review_rating_label.pack()
+    establishment_review_rating_entry.pack()
+
+    create_review_button.pack()
+
 
 def render_add_establishment(username:str, establishments, repository:Repository, window:tk.Tk, render_establishments):
     def create_establishment():
