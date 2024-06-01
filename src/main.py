@@ -112,15 +112,6 @@ class app:
         
         render_edit_food_item(food_id, self.food_items, repository, self.master)
         
-    def view_all_food_establishments(self):
-        self.clear_page()
-        establishments = repository.Reports.view_all_food_establishments()
-        render_view_all_establishments(self.reports_root, establishments)
-    
-    def view_establishments_with_high_rating(self):
-        self.clear_page()
-        establishments = repository.Reports.establishments_with_high_average_rating()
-        render_establishments_with_high_average_ratings(self.reports_root, establishments)
     
     def review_food(self, food_id, establishment_id):
         if self.username == None:
@@ -158,9 +149,33 @@ class app:
             return
 
         render_edit_food_review(review_id, food_id, self.food_reviews,  repository, self.master, self.food_reviews)
+    
+    # REPORTS
     def reports_root(self):
         self.clear_page()
-        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating)
+        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating, self.view_all_reviews, self.view_foods_from_establishment)
+    
+    def view_all_food_establishments(self):
+        self.clear_page()
+        establishments = repository.Reports.view_all_food_establishments()
+        render_view_all_establishments(self.reports_root, establishments)
+    
+    def view_establishments_with_high_rating(self):
+        self.clear_page()
+        establishments = repository.Reports.establishments_with_high_average_rating()
+        render_establishments_with_high_average_ratings(self.reports_root, establishments)
+    
+    def view_all_reviews(self):
+        self.clear_page()
+        all_reviews:pd.DataFrame = repository.Reports.get_all_reviews_with_name()
+        render_all_reviews(self.reports_root, all_reviews)
+
+    def view_foods_from_establishment(self):
+        self.clear_page()
+        establishments:pd.DataFrame = repository.Establishment.get_establishments()
+        food_items:pd.DataFrame = repository.Food.get_food()
+
+        render_foods_from_establishment(self.reports_root, establishments, food_items, repository)
 
 root = tk.Tk()
 app(root)

@@ -13,9 +13,6 @@ def render_food_reviews(username:str, food_reviews: pd.DataFrame, home, window:t
     welcome_message = tk.Label(text="Food Reviews")
     back_button = tk.Button(text="Back", command=lambda: home())
 
-    # ADD SEARCH BAR 
-    # Reviews by Food Name, Reviews by month
-
     # render table
     table = tk.LabelFrame()
 

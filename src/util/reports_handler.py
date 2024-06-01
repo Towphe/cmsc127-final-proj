@@ -13,15 +13,18 @@ class ReportsHandler:
         establishments = pd.read_sql('SELECT * FROM establishment', con=self.db_connection)
         return establishments
     
-    def reviews_for_establishment(self, establishment_id:int):      #2
-        reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = {establishment_id}", con=self.db_connection)
+    def get_all_reviews_with_name(self):   #2
+        reviews = pd.read_sql(f'''
+                            SELECT food_name AS review_for, reviewer_username, content, rating, date_created 
+                            FROM food_review NATURAL JOIN food_item
+                            
+                            UNION
+                            
+                            SELECT establishment_name AS review_for, reviewer_username, content, rating, date_created 
+                            FROM food_review NATURAL JOIN establishment''', con=self.db_connection)
         return reviews
-    
-    def reviews_for_food_item(self, food_id:int):      #2
-        reviews = pd.read_sql(f"SELECT * FROM food_review WHERE food_id = {food_id}", con=self.db_connection)
-        return reviews
-    
-    def food_items_from_establishment(self, establishment_id:int):      #3
+        
+    def all_food_items_from_establishment(self, establishment_id:int):      #3
         foods = pd.read_sql(f"SELECT * FROM food_item WHERE establishment_id = {establishment_id} ", con=self.db_connection)
         return foods
     
@@ -41,8 +44,8 @@ class ReportsHandler:
         establishments = pd.read_sql(f"SELECT * FROM establishment WHERE average_rating >= 4 ORDER BY average_rating DESC", con=self.db_connection)
         return establishments
 
-    def food_items_from_establishment(self, establishment_id:int): #7
-        foods = pd.read_sql(f"SELECT * FROM food WHERE establishment_id = {establishment_id} ORDER BY price ", con=self.db_connection)
+    def food_items_from_establishment_by_price(self, establishment_id:int): #7
+        foods = pd.read_sql(f"SELECT * FROM food_item WHERE establishment_id = {establishment_id} ORDER BY price ", con=self.db_connection)
         return foods
 
     #8

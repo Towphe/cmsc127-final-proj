@@ -13,6 +13,10 @@ class EstablishmentHandler:
         establishments = pd.read_sql('SELECT * FROM establishment', con=self.db_connection)
         return establishments
     
+    def search_establishment(self, establishment_name:str):
+        establishments = pd.read_sql(f"SELECT * FROM establishment WHERE establishment_name LIKE '%{establishment_name}%'", con=self.db_connection)
+        return establishments
+    
     def add_establishment(self, added_by:str, establishment_name:str):
         with self.db_connection.connect() as con:
             con.execute(text(f"INSERT INTO establishment (added_by, establishment_name) VALUES ('{added_by}', '{establishment_name}');"))
@@ -22,9 +26,9 @@ class EstablishmentHandler:
     def remove_establishment(self, establishment_id:int):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
-                             DELETE FROM establishment
-                             WHERE establishment_id = {establishment_id};
-                             '''))
+                            DELETE FROM establishment
+                            WHERE establishment_id = {establishment_id};
+                            '''))
             con.commit()
         return
     

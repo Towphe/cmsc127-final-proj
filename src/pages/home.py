@@ -11,7 +11,6 @@ def render_home(username, render_establishments, render_foods, render_signin, re
     establishment_reviews_button = tk.Button(text="Establishment Reviews", command=lambda: render_establishment_reviews())
     food_reviews_button = tk.Button(text="Food Reviews", command=lambda: render_food_reviews())
 
-
     signin_button = tk.Button(text="Sign In", command=lambda: render_signin())
     signup_button = tk.Button(text="Sign Up", command=lambda: render_signup())
     signout_button = tk.Button(text="Sign Out", command=lambda: signout())
@@ -29,4 +28,4 @@ def render_home(username, render_establishments, render_foods, render_signin, re
         signin_button.pack()
         signup_button.pack()
     else:
-        signin_button.pack()
+        signout_button.pack()
