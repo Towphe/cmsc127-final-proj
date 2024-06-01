@@ -93,10 +93,19 @@ class app:
         
         render_edit_food_item(food_id, self.food_items, repository, self.master)
     
+    def view_all_food_establishments(self):
+        self.clear_page()
+        establishments = repository.Reports.view_all_food_establishments()
+        render_view_all_establishments(self.reports_root, establishments)
+    
+    def view_establishments_with_high_rating(self):
+        self.clear_page()
+        establishments = repository.Reports.establishments_with_high_average_rating()
+        render_establishments_with_high_average_ratings(self.reports_root, establishments)
+
     def reports_root(self):
         self.clear_page()
-
-        render_reports_root(self.home)
+        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating)
 
 root = tk.Tk()
 app(root)
