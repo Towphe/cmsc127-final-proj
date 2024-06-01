@@ -38,7 +38,7 @@ class ReportsHandler:
         return reviews
 
     def establishments_with_high_average_rating(self):  # 6
-        establishments = pd.read_sql(f"SELECT * FROM establishment WHERE average_rating >= 4 ORDER BY average_rating DESC")
+        establishments = pd.read_sql(f"SELECT * FROM establishment WHERE average_rating >= 4 ORDER BY average_rating DESC", con=self.db_connection)
         return establishments
 
     def food_items_from_establishment(self, establishment_id:int): #7
