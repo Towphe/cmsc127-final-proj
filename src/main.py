@@ -111,10 +111,18 @@ class app:
             return
         
         render_edit_food_item(food_id, self.food_items, repository, self.master)
+        
+    def view_all_food_establishments(self):
+        self.clear_page()
+        establishments = repository.Reports.view_all_food_establishments()
+        render_view_all_establishments(self.reports_root, establishments)
+    
+    def view_establishments_with_high_rating(self):
+        self.clear_page()
+        establishments = repository.Reports.establishments_with_high_average_rating()
+        render_establishments_with_high_average_ratings(self.reports_root, establishments)
     
     def review_food(self, food_id, establishment_id):
-        self.clear_page()
-
         if self.username == None:
             self.food_items()
             return
@@ -150,6 +158,9 @@ class app:
             return
 
         render_edit_food_review(review_id, food_id, self.food_reviews,  repository, self.master, self.food_reviews)
+    def reports_root(self):
+        self.clear_page()
+        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating)
 
 root = tk.Tk()
 app(root)
