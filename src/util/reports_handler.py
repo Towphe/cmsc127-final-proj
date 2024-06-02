@@ -47,7 +47,7 @@ class ReportsHandler:
     def establishment_reviews_within_month(self, establishment_id, month:int, year:int):
         reviews = pd.read_sql(f"SELECT * FROM establishment_review NATURAL JOIN establishment WHERE MONTH(date_created) = {month} AND YEAR(date_created) = {year} AND establishment_id = {establishment_id}", con=self.db_connection)
         return reviews
-
+    
     def food_reviews_within_month(self, food_id, month:int, year:int):
         reviews = pd.read_sql(f"SELECT * FROM food_review WHERE MONTH(date_created) = {month} AND YEAR(date_created) = {year} AND food_id = {food_id}", con=self.db_connection)
         return reviews

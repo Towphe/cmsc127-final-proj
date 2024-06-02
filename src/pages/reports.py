@@ -391,7 +391,7 @@ def render_food_items_from_establishment_with_category(reports, clear_page, esta
     def search_food():
         eid = chosen_establishment.get()
         eid = int(eid.split(" - ")[0])
-        c = category_entry.get()
+        c = choice.get()
         clear_page()
         render_food_items_from_establishment_with_category(reports, clear_page, int(eid), c)
 
@@ -413,9 +413,14 @@ def render_food_items_from_establishment_with_category(reports, clear_page, esta
     # establishment_id_entry = tk.Entry()
     establishment_id_entry = tk.OptionMenu(filter_div, chosen_establishment, *establishment_options)
     establishment_id_entry.grid(row=0, column=2, sticky="ew")
+    
+    choice = tk.StringVar()
+    choice.set("meal")
+    options = ["meal","appetizer","dessert"]
+    
     category_entry_label = tk.Label(filter_div, text="Category")
     category_entry_label.grid(row=0, column=3, sticky="ew")
-    category_entry = tk.Entry(filter_div)
+    category_entry = tk.OptionMenu (filter_div, choice,*options)
     category_entry.grid(row=0, column=4, sticky="ew")
     search_button = tk.Button(filter_div, text="Search", command=lambda: search_food())
     search_button.grid(row=0, column=5, sticky="ew")
@@ -469,7 +474,6 @@ def render_establishment_reviews_within_month(reports, clear_page, month:int, ye
         clear_page()
         render_establishment_reviews_within_month(reports, clear_page, m, y, int(eid))
     
-
     dt = datetime.datetime.now()
     chosen_establishment = tk.StringVar()
     chosen_establishment.set("n/a")
@@ -559,6 +563,10 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
         
         clear_page()
         render_food_reviews_within_month(reports, clear_page, m, y, int(fid))
+    chosen_food = tk.StringVar()
+    chosen_food.set("n/a")
+
+    foods = repository.Food.get_food()
     
     chosen_food = tk.StringVar()
     chosen_food.set("n/a")
@@ -628,7 +636,6 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
         
         clear_page()
         render_food_from_establishment_by_price(reports, clear_page, by_str.get(), int(eid))
-    
     chosen_establishment = tk.StringVar()
     chosen_establishment.set("n/a")
 
@@ -636,7 +643,6 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
     foods = repository.Reports.food_items_from_establishment_by_price(establishment_id, by)
     by_str = tk.StringVar()
     by_str.set(by)
-    
     title = tk.Label(text="Foods by Price")
     back_button = tk.Button(text="Back", command=lambda: reports())
     establishment_label = tk.Label(text="Entry Id")
@@ -689,7 +695,7 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
 
 def render_food_by_range_and_category(reports, clear_page, min_price:float = None, max_price:float = None, category:str = None):
     def search_food():
-        c = cat_entry.get()
+        c = choice.get()
         if c == "": c = None
         min_p = min_price_entry.get()
         if min_p == "": min_p = None
@@ -753,15 +759,5 @@ def render_food_by_range_and_category(reports, clear_page, min_price:float = Non
         row += 1
 
     title.pack()
-    
-    # back_button.pack()
-    # cat_label.pack()
-    # cat_entry.pack()
-    # min_price_label.pack()
-    # min_price_entry.pack()
-    # max_price_label.pack()
-    # max_price_entry.pack()
-    
-    # search_button.pack()
     filter_div.pack()
     table.pack()
