@@ -9,8 +9,9 @@ def render_signin(home, repository:Repository, set_user, clear_page):
         signin_result = repository.Users.sign_in(username, password)
         
         if signin_result[0] == True:
-            # set username and password
-            set_user(username, password)
+            # set username, password, and user type
+            type = repository.Users.get_type(username)
+            set_user(username, password,type.iloc[0]['type'])
         else:
             is_wrong_password = True
             clear_page()
@@ -40,11 +41,12 @@ def render_signup(home, repository:Repository, set_user, clear_page):
         # repository.Users
         username = username_entry.get()
         password = password_entry.get()
-        signup_result = repository.Users.sign_up(username, password)
+        type = 'user'
+        signup_result = repository.Users.sign_up(username, password, type)
 
         if signup_result[0] == True:
             # successful signup, redirect to home
-            set_user(username, password)
+            set_user(username, password, type)
         else:
             # unsuccessful signup, retain page
             clear_page()

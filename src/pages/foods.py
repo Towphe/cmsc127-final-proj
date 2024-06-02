@@ -3,7 +3,7 @@ import pandas as pd
 from tkinter import ttk
 from util.repository import Repository
 
-def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, repository:Repository, clear_page, add_food, redirect_to_edit_food_item, redirect_to_food_items_view, redirect_to_review_food, search_key=""):
+def render_foods(username:str, user_type:str, foods: pd.DataFrame, home, window:tk.Tk, repository:Repository, clear_page, add_food, redirect_to_edit_food_item, redirect_to_food_items_view, redirect_to_review_food, search_key=""):
     def search_food_item():
         name = search_bar.get()
         clear_page()
@@ -52,12 +52,13 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
         delete_button = tk.Button(table, text="Delete", anchor="w", command=lambda fid=food["food_id"]: delete_food(fid))
         review_button = tk.Button(table, text="Review", anchor="w", command=lambda fid=food["food_id"], eid=food["establishment_id"]: redirect_to_review_food(fid,eid))
 
-        if food["added_by"] != username:
-            # disable edit/delete when username != current login
-            edit_button.config(state=tk.DISABLED, bg='grey')
-            delete_button.config(state=tk.DISABLED, bg='grey')
-        else:
-            review_button.config(state=tk.DISABLED, bg='grey')
+        if user_type != 'admin':
+            if food["added_by"] != username:
+                # disable edit/delete when username != current login
+                edit_button.config(state=tk.DISABLED, bg='grey')
+                delete_button.config(state=tk.DISABLED, bg='grey')
+            else:
+                review_button.config(state=tk.DISABLED, bg='grey')
 
         # render rows
         id_label.grid(row=row, column=0, sticky="ew")

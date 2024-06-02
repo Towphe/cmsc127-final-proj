@@ -3,7 +3,7 @@ import pandas as pd
 from pandastable import Table, TableModel
 from util.repository import Repository
 
-def render_establishment_reviews(username:str, establishment_reviews: pd.DataFrame, home, window:tk.Tk, redirect_to_edit_establishment_review,repository:Repository, clear_page, redirect_to_establishment_reviews):
+def render_establishment_reviews(username:str, user_type:str, establishment_reviews: pd.DataFrame, home, window:tk.Tk, redirect_to_edit_establishment_review,repository:Repository, clear_page, redirect_to_establishment_reviews):
     def delete_review(review_id:int, establishment_id:int):
         repository.Establishment.delete_establishment_Review(review_id, establishment_id)
         clear_page()
@@ -13,9 +13,6 @@ def render_establishment_reviews(username:str, establishment_reviews: pd.DataFra
     welcome_message = tk.Label(text="Establishment Reviews")
     welcome_message.config(font=("Helvetica", 12, "bold"))
     back_button = tk.Button(text="Back", command=lambda: home())
-
-    # ADD SEARCH BAR 
-    # Reviews by Establishment Name, Reviews by month
 
     # render table
     table = tk.LabelFrame()
@@ -42,10 +39,11 @@ def render_establishment_reviews(username:str, establishment_reviews: pd.DataFra
         edit_button = tk.Button(table, text="Edit", anchor="w", command=lambda rid=review["review_id"], eid=review["establishment_id"] : redirect_to_edit_establishment_review(rid,eid))
         delete_button = tk.Button(table, text="Delete", anchor="w", command=lambda rid=review["review_id"], eid=review["establishment_id"]: delete_review(rid, eid))
 
-        if review["reviewer_username"] != username:
-            # disable edit/delete when username != current login
-            edit_button.config(state=tk.DISABLED, bg='grey')
-            delete_button.config(state=tk.DISABLED, bg='grey')
+        if user_type != 'admin':
+            if review["reviewer_username"] != username:
+                # disable edit/delete when username != current login
+                edit_button.config(state=tk.DISABLED, bg='grey')
+                delete_button.config(state=tk.DISABLED, bg='grey')
 
         # render rows
         id_label.grid(row=row, column=0, sticky="ew")

@@ -3,7 +3,7 @@ import pandas as pd
 from pandastable import Table, TableModel
 from util.repository import Repository
 
-def render_food_reviews(username:str, food_reviews: pd.DataFrame, home, window:tk.Tk, redirect_to_edit_food_review,repository:Repository, clear_page, redirect_to_food_reviews):
+def render_food_reviews(username:str, user_type:str, food_reviews: pd.DataFrame, home, window:tk.Tk, redirect_to_edit_food_review,repository:Repository, clear_page, redirect_to_food_reviews):
     def delete_review(review_id:int, food_id:int):
         repository.Food.delete_food_review(review_id, food_id)
         clear_page()
@@ -41,10 +41,11 @@ def render_food_reviews(username:str, food_reviews: pd.DataFrame, home, window:t
         edit_button = tk.Button(table, text="Edit", anchor="w", command=lambda rid=review["review_id"], fid=review["food_id"]: redirect_to_edit_food_review(rid, fid))
         delete_button = tk.Button(table, text="Delete", anchor="w", command=lambda rid=review["review_id"], fid=review["food_id"]: delete_review(rid, fid))
 
-        if review["reviewer_username"] != username:
-            # disable edit/delete when username != current login
-            edit_button.config(state=tk.DISABLED, bg='grey')
-            delete_button.config(state=tk.DISABLED, bg='grey')
+        if user_type != 'admin':
+            if review["reviewer_username"] != username:
+                # disable edit/delete when username != current login
+                edit_button.config(state=tk.DISABLED, bg='grey')
+                delete_button.config(state=tk.DISABLED, bg='grey')
 
         # render rows
         id_label.grid(row=row, column=0, sticky="ew")
