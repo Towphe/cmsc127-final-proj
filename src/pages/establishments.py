@@ -2,7 +2,7 @@ import tkinter as tk
 import pandas as pd
 from util.repository import Repository
 
-def render_establishments(username:str, establishments: pd.DataFrame, add_establishment, home, window:tk.Tk, redirect_to_edit_establishment, redirect_to_review_establishment, repository:Repository, clear_page, redirect_to_establishments, search_key=''):
+def render_establishments(username:str, user_type:str, establishments: pd.DataFrame, add_establishment, home, window:tk.Tk, redirect_to_edit_establishment, redirect_to_review_establishment, repository:Repository, clear_page, redirect_to_establishments, search_key=''):
     def delete_establishment(establishment_id:int):
         repository.Establishment.remove_establishment(establishment_id)
         clear_page()
@@ -55,12 +55,13 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
         delete_button = tk.Button(table, text="Delete", anchor="w", command=lambda eid=establishment["establishment_id"]: delete_establishment(eid))
         review_button = tk.Button(table, text="Review", anchor="w", command=lambda eid=establishment["establishment_id"]: redirect_to_review_establishment(eid))
 
-        if establishment["added_by"] != username:
-            # disable edit/delete when username != current login
-            edit_button.config(state=tk.DISABLED, bg='grey')
-            delete_button.config(state=tk.DISABLED, bg='grey')
-        else:
-            review_button.config(state=tk.DISABLED, bg='grey')
+        if user_type != "admin":
+            if establishment["added_by"] != username:
+                # disable edit/delete when username != current login
+                edit_button.config(state=tk.DISABLED, bg='grey')
+                delete_button.config(state=tk.DISABLED, bg='grey')
+            else:
+                review_button.config(state=tk.DISABLED, bg='grey')
 
         # render rows
         id_label.grid(row=row, column=0, sticky="ew")

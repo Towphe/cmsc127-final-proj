@@ -46,68 +46,6 @@ def render_reports_root(home, view_all_food_establishments, view_establishments_
     view_food_by_range_and_category.pack()
     tk.Label(text="").pack(pady=5)  # whitespace
 
-def render_all_reviews(reports, reviews):
-    def load_data_on_table (reviews):
-        # Load all reviews
-        row = 1
-        for i in range(reviews.shape[0]):
-            review = reviews.iloc[i]
-            name_label = tk.Label(table, text= review['review_for'], anchor="w")
-            username_label = tk.Label(table, text= review['reviewer_username'], anchor="w")
-            rating_label = tk.Label(table, text= review['rating'], anchor="w")
-            content_label = tk.Label(table, text= review['content'], anchor="w")
-            date_label = tk.Label(table, text= review['date_created'], anchor="w")
-
-            name_label.grid(row=row, column=0, sticky="ew")
-            username_label.grid(row=row, column=1, sticky="ew")
-            rating_label.grid(row=row, column=2, sticky="ew")
-            content_label.grid(row=row, column=3, sticky="ew")
-            date_label.grid(row=row, column=4, sticky="ew")
-
-            row += 1
-
-    def empty_table():
-        # empty the table
-        for row in table.winfo_children():
-            count = 0
-            table.winfo_children()[count].destroy()
-
-        
-    def search(e):
-        name = search_bar.get() #get value
-    
-        if name == '':
-            data = reviews
-        else:                   #find review for the given string
-            data = reviews.query(f"review_for.str.contains('{name}', case=False)" )
-        
-        empty_table()
-        load_data_on_table(data)
-
-    title = tk.Label(text="View all reviews")
-    title.config(font=("Helvetica", 12, "bold"))
-    back_button = tk.Button(text="Back", command=lambda: reports())
-    table = tk.LabelFrame()
-
-    search_bar = tk.Entry()
-
-    # Search data frame every key release
-    search_bar.bind("<KeyRelease>", search)
-
-    tk.Label(table, text="Review For", anchor="w").grid(row=0, column=0, sticky="ew")
-    tk.Label(table, text="Reviewee", anchor="w").grid(row=0, column=1, sticky="ew")
-    tk.Label(table, text="Rating", anchor="w").grid(row=0, column=2, sticky="ew")
-    tk.Label(table, text="Content", anchor="w").grid(row=0, column=3, sticky="ew")
-    tk.Label(table, text="Date", anchor="w").grid(row=0, column=4, sticky="ew")
-
-    # Preload table
-    load_data_on_table(reviews)
-    
-    title.pack(pady=20)
-    back_button.pack()
-    search_bar.pack()
-    table.pack()
-
 def render_view_all_establishments(reports, establishments):
     title = tk.Label(text="All Establishments")
     title.config(font=("Helvetica", 12, "bold"))
@@ -547,7 +485,6 @@ def render_establishment_reviews_within_month(reports, clear_page, month:int, ye
         content_label.grid(row=row, column=2, sticky="ew")
         rating_label.grid(row=row, column=3, sticky="ew")
         date_created_label.grid(row=row, column=4, sticky="ew")
-
         row += 1
 
     title.pack(pady=20)
@@ -662,7 +599,7 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
 
     establishment_options = []
     for establishment in establishments.to_numpy():
-        print(establishment)
+        # print(establishment)
         establishment_options.append(f"{establishment[0]} - {establishment[2]}")
     
     establishment_id_entry = tk.OptionMenu(filter_div, chosen_establishment, *establishment_options)
@@ -678,16 +615,18 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
     tk.Label(table, text="Establishment Id", anchor="w").grid(row=0, column=1, sticky="ew")
-    tk.Label(table, text="Name", anchor="w").grid(row=0, column=2, sticky="ew")
-    tk.Label(table, text="Category", anchor="w").grid(row=0, column=3, sticky="ew")
-    tk.Label(table, text="Price", anchor="w").grid(row=0, column=4, sticky="ew")
-    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Establishment", anchor="w").grid(row=0, column=2, sticky="ew")
+    tk.Label(table, text="Name", anchor="w").grid(row=0, column=3, sticky="ew")
+    tk.Label(table, text="Category", anchor="w").grid(row=0, column=4, sticky="ew")
+    tk.Label(table, text="Price", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=6, sticky="ew")
 
     row = 1
     for i in range(foods.shape[0]):
         food = foods.iloc[i]
         id_label = tk.Label(table, text=str(food['food_id']), anchor="w")
         establishment_id_label = tk.Label(table, text=str(food['establishment_id']), anchor="w")
+        establishment_label = tk.Label(table, text=food['establishment_name'], anchor="w")
         name_label = tk.Label(table, text=food['food_name'], anchor="w")
         category_label = tk.Label(table, text=food['category'], anchor="w")
         price_label = tk.Label(table, text=food['price'], anchor="w")
@@ -696,10 +635,11 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
         # render rows
         id_label.grid(row=row, column=0, sticky="ew")
         establishment_id_label.grid(row=row, column=1, sticky="ew")
-        name_label.grid(row=row, column=2, sticky="ew")
-        category_label.grid(row=row, column=3, sticky="ew")
-        price_label.grid(row=row, column=4, sticky="ew")
-        average_rating_label.grid(row=row, column=5, sticky="ew")
+        establishment_label.grid(row=row, column=2, sticky="ew")
+        name_label.grid(row=row, column=3, sticky="ew")
+        category_label.grid(row=row, column=4, sticky="ew")
+        price_label.grid(row=row, column=5, sticky="ew")
+        average_rating_label.grid(row=row, column=6, sticky="ew")
 
         row += 1
 
@@ -754,16 +694,18 @@ def render_food_by_range_and_category(reports, clear_page, min_price:float = Non
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
     tk.Label(table, text="Establishment Id", anchor="w").grid(row=0, column=1, sticky="ew")
-    tk.Label(table, text="Name", anchor="w").grid(row=0, column=2, sticky="ew")
-    tk.Label(table, text="Category", anchor="w").grid(row=0, column=3, sticky="ew")
-    tk.Label(table, text="Price", anchor="w").grid(row=0, column=4, sticky="ew")
-    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Establishment", anchor="w").grid(row=0, column=2, sticky="ew")
+    tk.Label(table, text="Name", anchor="w").grid(row=0, column=3, sticky="ew")
+    tk.Label(table, text="Category", anchor="w").grid(row=0, column=4, sticky="ew")
+    tk.Label(table, text="Price", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=6, sticky="ew")
 
     row = 1
     for i in range(foods.shape[0]):
         food = foods.iloc[i]
         id_label = tk.Label(table, text=str(food['food_id']), anchor="w")
         establishment_id_label = tk.Label(table, text=str(food['establishment_id']), anchor="w")
+        establishment_label = tk.Label(table, text=food['establishment_name'], anchor="w")
         name_label = tk.Label(table, text=food['food_name'], anchor="w")
         category_label = tk.Label(table, text=food['category'], anchor="w")
         price_label = tk.Label(table, text=food['price'], anchor="w")
@@ -772,10 +714,11 @@ def render_food_by_range_and_category(reports, clear_page, min_price:float = Non
         # render rows
         id_label.grid(row=row, column=0, sticky="ew")
         establishment_id_label.grid(row=row, column=1, sticky="ew")
-        name_label.grid(row=row, column=2, sticky="ew")
-        category_label.grid(row=row, column=3, sticky="ew")
-        price_label.grid(row=row, column=4, sticky="ew")
-        average_rating_label.grid(row=row, column=5, sticky="ew")
+        establishment_label.grid(row=row, column=2, sticky="ew")
+        name_label.grid(row=row, column=3, sticky="ew")
+        category_label.grid(row=row, column=4, sticky="ew")
+        price_label.grid(row=row, column=5, sticky="ew")
+        average_rating_label.grid(row=row, column=6, sticky="ew")
 
         row += 1
 
