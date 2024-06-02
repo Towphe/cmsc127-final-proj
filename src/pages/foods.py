@@ -16,6 +16,7 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
 
     filter_div = tk.LabelFrame()
     welcome_message = tk.Label(text="Food View")
+    welcome_message.config(font=("Helvetica", 12, "bold"))
 
     back_button = tk.Button(filter_div, text="Back", command=lambda: home())
     back_button.grid(row=0, column=0, sticky="ew")
@@ -84,10 +85,10 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
     tk.Label(table, text="Review", anchor="w").grid(row=0, column=9, sticky="ew")
 
 
-    welcome_message.pack()
+    welcome_message.pack(pady=20)
     filter_div.pack()
     table.pack()
-    add_button.pack()
+    add_button.pack(pady=20)
 
 def render_add_food_item(username:str, foods, repository:Repository, window:tk.Tk, render_foods):
     def create_food():
@@ -125,6 +126,7 @@ def render_add_food_item(username:str, foods, repository:Repository, window:tk.T
 
     back_button = tk.Button(text="Back", command=lambda: foods())
     title = tk.Label(text="Add New Food Item")
+    title.config(font=("Helvetica", 12, "bold"))
 
     establishment_id_label = tk.Label(text="Establishment")
     food_name_label = tk.Label(text="Food Name")
@@ -145,7 +147,7 @@ def render_add_food_item(username:str, foods, repository:Repository, window:tk.T
     price_entry = tk.Entry()
     create_food_button = tk.Button(text="Create Food", command=lambda: create_food())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     establishment_id_label.pack()
     search_bar.pack()
@@ -168,6 +170,7 @@ def render_review_food (food_id:int, establishment_id:int, username:str, foods:p
         render_foods()
 
     title = tk.Label(text="Review Food Item")
+    title.config(font=("Helvetica", 12, "bold"))
 
     food_review_content_label = tk.Label(text="Review")
     food_review_content_entry = tk.Entry()
@@ -177,7 +180,7 @@ def render_review_food (food_id:int, establishment_id:int, username:str, foods:p
     back_button = tk.Button(text="Back", command=lambda: foods())
     create_review_button = tk.Button(text="Confirm", command=lambda: create_food_review())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
 
     food_review_content_label.pack()
@@ -197,6 +200,7 @@ def render_edit_food_item(food_id:int, render_foods, repository:Repository, wind
     
     back_button = tk.Button(text="Back", command=lambda: render_foods())
     title = tk.Label(text="Edit Food Item")
+    title.config(font=("Helvetica", 12, "bold"))
 
     food_name_label = tk.Label(text="Food Name")
     food_name_entry = tk.Entry()
@@ -213,7 +217,7 @@ def render_edit_food_item(food_id:int, render_foods, repository:Repository, wind
 
     edit_food_button = tk.Button(text="Confirm", command=lambda: edit_food())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     food_name_label.pack()
     food_name_entry.pack()

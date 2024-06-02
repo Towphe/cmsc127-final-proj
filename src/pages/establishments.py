@@ -16,6 +16,7 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
 
     filter_div = tk.LabelFrame()
     welcome_message = tk.Label(text="Establishments View")
+    welcome_message.config(font=("Helvetica", 12, "bold"))
 
     back_button = tk.Button(filter_div, text="Back", command=lambda: home())
     back_button.grid(row=0, column=0, sticky="ew")
@@ -76,10 +77,10 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
     
     add_button = tk.Button(text="Add New Establishment", command=lambda: add_establishment())
 
-    welcome_message.pack()
+    welcome_message.pack(pady=20)
     filter_div.pack()
     table.pack()
-    add_button.pack()
+    add_button.pack(pady=20)
 
 def render_review_establishment (establishment_id:int , username:str, establishments:pd.DataFrame, repository:Repository, window:tk.Tk, render_establishments):
     def create_establishment_review():
@@ -91,6 +92,7 @@ def render_review_establishment (establishment_id:int , username:str, establishm
 
 
     title = tk.Label(text="Review Establishment")
+    title.config(font=("Helvetica", 12, "bold"))
 
     establishment_review_content_label = tk.Label(text="Review")
     establishment_review_content_entry = tk.Entry()
@@ -100,7 +102,7 @@ def render_review_establishment (establishment_id:int , username:str, establishm
     back_button = tk.Button(text="Back", command=lambda: establishments())
     create_review_button = tk.Button(text="Confirm", command=lambda: create_establishment_review())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
 
     establishment_review_content_label.pack()
@@ -119,12 +121,13 @@ def render_add_establishment(username:str, establishments, repository:Repository
     
     back_button = tk.Button(text="Back", command=lambda: establishments())
     title = tk.Label(text="Add Establishment")
+    title.config(font=("Helvetica", 12, "bold"))
 
     establishment_name_label = tk.Label(text="Establishment Name")
     establishment_name_entry = tk.Entry()
     create_establishment_button = tk.Button(text="Create Establishment", command=lambda: create_establishment())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     establishment_name_label.pack()
     establishment_name_entry.pack()
@@ -138,12 +141,13 @@ def render_edit_establishment(establishment_id:int, establishments:pd.DataFrame,
     
     back_button = tk.Button(text="Back", command=lambda: establishments())
     title = tk.Label(text="Edit Establishment")
+    title.config(font=("Helvetica", 12, "bold"))
 
     establishment_name_label = tk.Label(text="Establishment Name")
     establishment_name_entry = tk.Entry()
     edit_establishment_button = tk.Button(text="Edit Establishment", command=lambda: edit_establishment())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     establishment_name_label.pack()
     establishment_name_entry.pack()
