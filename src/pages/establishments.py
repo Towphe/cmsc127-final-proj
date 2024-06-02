@@ -12,7 +12,7 @@ def render_establishments(username:str, user_type:str, establishments: pd.DataFr
     def search_establishment():
         name = search_bar.get()
         clear_page()
-        render_establishments(username, establishments, add_establishment, home, window, redirect_to_edit_establishment, redirect_to_review_establishment, repository, clear_page, redirect_to_establishments, name )
+        render_establishments(username, user_type, establishments, add_establishment, home, window, redirect_to_edit_establishment, redirect_to_review_establishment, repository, clear_page, redirect_to_establishments, name )
 
     filter_div = tk.LabelFrame()
     welcome_message = tk.Label(text="Establishments View")
