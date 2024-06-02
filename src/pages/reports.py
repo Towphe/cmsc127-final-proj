@@ -513,8 +513,12 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
         
         clear_page()
         render_food_reviews_within_month(reports, clear_page, m, y, int(fid))
-    chosen_food = tk.StringVar()
-    chosen_food.set("n/a")
+    
+    dt = datetime.datetime.now()
+    chosen_establishment = tk.StringVar()
+    chosen_establishment.set("n/a")
+    filter_div = tk.LabelFrame()
+
 
     foods = repository.Food.get_food()
     
@@ -542,10 +546,13 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
     month_label = tk.Label(filter_div, text="Month")
     month_label.grid(row=0, column=3, sticky="ew")
     month_entry = tk.Entry(filter_div)
+    month_entry.insert(0, dt.month)
     month_entry.grid(row=0, column=4, sticky="ew")
+
     year_label = tk.Label(filter_div, text="Year")
     year_label.grid(row=0, column=5, sticky="ew")
     year_entry = tk.Entry(filter_div)
+    year_entry.insert(0, dt.year)
     year_entry.grid(row=0, column=6, sticky="ew")
     search_button = tk.Button(filter_div, text="Search", command=lambda: search_food_reviews())
     search_button.grid(row=0, column=7, sticky="ew")

@@ -29,6 +29,25 @@ class EstablishmentHandler:
     
     def remove_establishment(self, establishment_id:int):
         with self.db_connection.connect() as con:
+            # Delete all food reviews for food items in the establishment
+            con.execute(text(f'''
+                            DELETE FROM food_review WHERE food_id IN (
+                            SELECT food_id FROM food_item WHERE establishment_id = {establishment_id});
+                        '''))
+            con.commit()
+            # Delete all food items from the establishment
+            con.execute(text(f'''
+                            DELETE FROM food_item 
+                            WHERE establishment_id = {establishment_id};
+                        '''))
+            con.commit()
+            # Delete all reviews for establishment
+            con.execute(text(f'''
+                            DELETE FROM establishment_review 
+                            WHERE establishment_id = {establishment_id};
+                        '''))
+            con.commit()
+            # Delete establishment
             con.execute(text(f'''
                             DELETE FROM establishment
                             WHERE establishment_id = {establishment_id};
@@ -103,9 +122,9 @@ class EstablishmentHandler:
     def delete_establishment_Review(self, review_id:int, establishment_id:int):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
-                            DELETE FROM establishment_review 
+                            DELETE FROM establishment_review
                             WHERE review_id = {review_id};
-                        '''))
+                            '''))
             con.commit()
             con.execute(text(f'''
                             UPDATE establishment 

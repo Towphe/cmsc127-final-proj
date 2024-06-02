@@ -29,6 +29,10 @@ class FoodHandler:
     
     def remove_food(self, food_id:int):
         with self.db_connection.connect() as con:
+            # Delete all food reviews for item
+            con.execute(text(f"DELETE FROM food_review WHERE food_id = {food_id}; "))
+            con.commit()
+            # Delete food item
             con.execute(text(f"DELETE FROM food_item WHERE food_id = {food_id}; "))
             con.commit()
         return
