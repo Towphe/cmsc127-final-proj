@@ -7,7 +7,7 @@ def render_foods(username:str, user_type:str, foods: pd.DataFrame, home, window:
     def search_food_item():
         name = search_bar.get()
         clear_page()
-        render_foods(username, foods, home, window, repository, clear_page, add_food,  redirect_to_edit_food_item, redirect_to_food_items_view, redirect_to_review_food, name )
+        render_foods(username, user_type, foods, home, window, repository, clear_page, add_food,  redirect_to_edit_food_item, redirect_to_food_items_view, redirect_to_review_food, name )
 
     def delete_food(food_id:int):
         repository.Food.remove_food(food_id)
