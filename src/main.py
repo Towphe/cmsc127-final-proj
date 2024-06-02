@@ -17,7 +17,7 @@ class app:
     def __init__(self, master: tk.Tk):
         self.master = master
         self.master.minsize(900, 350)
-        self.username = None
+        self.username = "tope"
         self.user_type = None
         self.password = None
         self.home()

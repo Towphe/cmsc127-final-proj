@@ -14,9 +14,12 @@ class FoodHandler:
         return foods
     
     def find_food_with_key(self, key:str):
-        print(key)
         foods = pd.read_sql(f"SELECT food_id, e.establishment_id, added_by, establishment_name, food_name, price, category, fi.average_rating FROM food_item fi INNER JOIN establishment e ON fi.establishment_id = e.establishment_id WHERE food_name LIKE '%%{key}%%';", con=self.db_connection)
         return foods
+
+    def find_food_with_id(self, food_id:str):
+        food = pd.read_sql(f"SELECT * FROM food_item WHERE food_id = {food_id} ", con=self.db_connection)
+        return food.iloc[0]
     
     def add_food(self, establishment_id:int, food_name:str, price:float, category:str):
         with self.db_connection.connect() as con:
@@ -36,7 +39,8 @@ class FoodHandler:
                             UPDATE food_item 
                             SET food_name = '{food_name}',
                                 category = '{category}',
-                                price = {price}
+                                price = {price},
+                                average_rating = (SELECT average_rating FROM food_item WHERE food_id = {food_id})
                             WHERE food_id = {food_id};
                         '''))
             con.commit()
@@ -67,6 +71,10 @@ class FoodHandler:
     def get_all_food_reviews(self):
         all_food_reviews = pd.read_sql(f"SELECT fr.review_id, fi.establishment_id, fr.food_id, fr.reviewer_username, fr.content, fr.rating, fr.date_created FROM food_review fr NATURAL JOIN food_item fi", con=self.db_connection)
         return all_food_reviews
+    
+    def get_food_review_by_id(self, review_id:int):
+        food_review = pd.read_sql(f"SELECT * FROM food_review WHERE review_id = {review_id} ", con=self.db_connection)
+        return food_review.iloc[0]
     
     def get_all_food_reviews_by(self, username:str):
         all_food_reviews = pd.read_sql(f"SELECT fr.review_id, fi.establishment_id, fr.food_id, fr.reviewer_username, fr.content, fr.rating, fr.date_created FROM food_review fr NATURAL JOIN food_item fi WHERE reviewer_username='{username}'", con=self.db_connection)

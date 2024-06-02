@@ -139,12 +139,15 @@ def render_edit_establishment(establishment_id:int, establishments:pd.DataFrame,
         repository.Establishment.update_establishment(establishment_id, establishment_name)
         render_establishments()
     
+    establishment_details = repository.Establishment.find_establishment_by_id(establishment_id)
+
     back_button = tk.Button(text="Back", command=lambda: establishments())
     title = tk.Label(text="Edit Establishment")
     title.config(font=("Helvetica", 12, "bold"))
 
     establishment_name_label = tk.Label(text="Establishment Name")
     establishment_name_entry = tk.Entry()
+    establishment_name_entry.insert(0, establishment_details['establishment_name'])
     edit_establishment_button = tk.Button(text="Edit Establishment", command=lambda: edit_establishment())
 
     title.pack(pady=20)

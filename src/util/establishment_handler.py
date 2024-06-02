@@ -17,6 +17,10 @@ class EstablishmentHandler:
         establishments = pd.read_sql(f"SELECT * FROM establishment WHERE establishment_name LIKE '%%{establishment_name}%%'", con=self.db_connection)
         return establishments
     
+    def find_establishment_by_id(self, establishment_id:int):
+        establishment = pd.read_sql(f'SELECT * FROM establishment WHERE establishment_id = {establishment_id} ', con=self.db_connection)
+        return establishment.iloc[0]
+    
     def add_establishment(self, added_by:str, establishment_name:str):
         with self.db_connection.connect() as con:
             con.execute(text(f"INSERT INTO establishment (added_by, establishment_name) VALUES ('{added_by}', '{establishment_name}');"))
@@ -36,7 +40,8 @@ class EstablishmentHandler:
         with self.db_connection.connect() as con:
             con.execute(text(f'''
                             UPDATE establishment 
-                            SET establishment_name = '{establishment_name}'
+                            SET establishment_name = '{establishment_name}',
+                                average_rating = (SELECT average_rating FROM establishment WHERE establishment_id = {establishment_id})
                             WHERE establishment_id = {establishment_id};
                         '''))
             con.commit()
@@ -64,6 +69,10 @@ class EstablishmentHandler:
         establishment_reviews = pd.read_sql(f"SELECT * FROM establishment_review WHERE establishment_id = '{establishment_id}'", con=self.db_connection)
         return establishment_reviews
     
+    def get_establishment_review_by_id(self, review_id):
+        establishment_review = pd.read_sql(f"SELECT * FROM establishment_review WHERE review_id = {review_id} ", con=self.db_connection)
+        return establishment_review.iloc[0]
+
     def get_all_establishment_reviews(self):
         all_establishment_reviews = pd.read_sql(f"SELECT * FROM establishment_review", con=self.db_connection)
         return all_establishment_reviews

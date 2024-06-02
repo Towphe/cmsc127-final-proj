@@ -198,22 +198,28 @@ def render_edit_food_item(food_id:int, render_foods, repository:Repository, wind
         repository.Food.update_food(food_id, food_name, category, float(price))
         render_foods()
     
+    food_details = repository.Food.find_food_with_id(food_id)
     back_button = tk.Button(text="Back", command=lambda: render_foods())
     title = tk.Label(text="Edit Food Item")
     title.config(font=("Helvetica", 12, "bold"))
 
     food_name_label = tk.Label(text="Food Name")
     food_name_entry = tk.Entry()
+    food_name_entry.insert(0, food_details['food_name'])
+    food_name_entry.config(width=15)
 
     choice = tk.StringVar()
-    choice.set("meal")
+    choice.set(food_details['category'])
     options = ["meal","appetizer","dessert"]
-
+    
     category_label = tk.Label(text="Category")
     category_drop = tk.OptionMenu (None, choice,*options)
+    category_drop.config(width=15)
     # category_entry = tk.Entry()
     price_label = tk.Label(text="Price")
     price_entry = tk.Entry()
+    price_entry.insert(0, food_details["price"])
+    price_entry.config(width=15)
 
     edit_food_button = tk.Button(text="Confirm", command=lambda: edit_food())
 

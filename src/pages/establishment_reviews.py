@@ -71,14 +71,18 @@ def render_edit_establishment_review(review_id:int, establishment_id:int, establ
         repository.Establishment.update_establishment_review(review_id, establishment_id, content, rating)
         render_establishments()
 
+    review_details = repository.Establishment.get_establishment_review_by_id(review_id)
+
     back_button = tk.Button(text="Back", command=lambda: establishments())
     title = tk.Label(text="Edit Establishment Review")
     title.config(font=("Helvetica", 12, "bold"))
 
     content_label = tk.Label(text="Content")
     content_entry = tk.Entry()
+    content_entry.insert(0, review_details['content'])
     rating_label = tk.Label(text="Rating")
     rating_entry = tk.Entry()
+    rating_entry.insert(0, review_details['rating'])
 
     edit_establishment_button = tk.Button(text="Confirm Changes", command=lambda: edit_establishment_review())
 

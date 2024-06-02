@@ -71,6 +71,8 @@ def render_edit_food_review(review_id:int, food_id:int, foods:pd.DataFrame, repo
         # review_id:int, food_id:int, content:str, rating:float
         repository.Food.update_food_review(review_id, food_id, content, rating)
         render_foods()
+    
+    review_details = repository.Food.get_food_review_by_id(review_id)
 
     back_button = tk.Button(text="Back", command=lambda: foods())
     title = tk.Label(text="Edit food Review")
@@ -78,8 +80,10 @@ def render_edit_food_review(review_id:int, food_id:int, foods:pd.DataFrame, repo
 
     content_label = tk.Label(text="Content")
     content_entry = tk.Entry()
+    content_entry.insert(0, review_details['content'])
     rating_label = tk.Label(text="Rating")
     rating_entry = tk.Entry()
+    rating_entry.insert(0, review_details['rating'])
 
     edit_food_button = tk.Button(text="Confirm Changes", command=lambda: edit_food_review())
 
