@@ -367,7 +367,7 @@ def render_food_items_from_establishment_with_category(reports, clear_page, esta
     establishment_label.grid(row=0, column=1, sticky="ew")
     establishment_options = []
     for establishment in establishments.to_numpy():
-        establishment_options.append(f"{establishment[0]} - {establishment[1]}")
+        establishment_options.append(f"{establishment[0]} - {establishment[2]}")
     
     establishment_id_entry = tk.OptionMenu(filter_div, chosen_establishment, *establishment_options)
     establishment_id_entry.grid(row=0, column=2, sticky="ew")
@@ -449,7 +449,7 @@ def render_establishment_reviews_within_month(reports, clear_page, month:int, ye
 
     establishment_options = []
     for establishment in establishments.to_numpy():
-        establishment_options.append(f"{establishment[0]} - {establishment[1]}")
+        establishment_options.append(f"{establishment[0]} - {establishment[2]}")
 
     # establishment_id_entry = tk.Entry()
     establishment_id_entry = tk.OptionMenu(filter_div, chosen_establishment, *establishment_options)
@@ -613,7 +613,7 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
     establishment_options = []
     for establishment in establishments.to_numpy():
         # print(establishment)
-        establishment_options.append(f"{establishment[0]} - {establishment[1]}")
+        establishment_options.append(f"{establishment[0]} - {establishment[2]}")
     
     establishment_id_entry = tk.OptionMenu(filter_div, chosen_establishment, *establishment_options)
     establishment_id_entry.grid(row=0, column=2, sticky="ew")
