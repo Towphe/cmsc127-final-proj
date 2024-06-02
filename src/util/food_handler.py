@@ -37,11 +37,11 @@ class FoodHandler:
             con.commit()
         return
     
-    def create_food_review(self, food_id:int, reviewer:str, content:str, rating:float):
+    def create_food_review(self, food_id:int, establishment_id:int, reviewer:str, content:str, rating:float):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
-                            INSERT INTO food_review (food_id, reviewer_username, content, rating)
-                            VALUES ({food_id}, '{reviewer}', '{content}', {rating});
+                            INSERT INTO food_review (food_id, establishment_id, reviewer_username, content, rating)
+                            VALUES ({food_id}, {establishment_id}, '{reviewer}', '{content}', {rating});
                         '''))
             con.commit()
             con.execute(text(f'''
@@ -58,6 +58,10 @@ class FoodHandler:
     def get_food_reviews(self, food_id:int):
         food_reviews = pd.read_sql(f"SELECT * FROM food_review WHERE food_id = {food_id}", con=self.db_connection)
         return food_reviews
+    
+    def get_all_food_reviews(self):
+        all_food_reviews = pd.read_sql(f"SELECT * FROM food_review", con=self.db_connection)
+        return all_food_reviews
     
     def update_food_review(self, review_id:int, food_id:int, content:str, rating:float):
         with self.db_connection.connect() as con:
