@@ -18,6 +18,7 @@ def render_signin(home, repository:Repository, set_user, clear_page):
     
     # define elements
     title = tk.Label(text="Sign In")
+    title.config(font=("Helvetica", 12, "bold"))
     back_button = tk.Button(text="Back", command=lambda: home())
     username_label = tk.Label(text="Username")
     username_entry = tk.Entry()
@@ -26,7 +27,7 @@ def render_signin(home, repository:Repository, set_user, clear_page):
     sign_in_button = tk.Button(text="Sign In", command=lambda: signin())
 
     # render
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     username_label.pack()
     username_entry.pack()
@@ -51,6 +52,7 @@ def render_signup(home, repository:Repository, set_user, clear_page):
 
     # define elements
     title = tk.Label(text="Sign Up")
+    title.config(font=("Helvetica", 12, "bold"))
     back_button = tk.Button(text="Back", command=lambda: home())
     username_label = tk.Label(text="Username")
     username_entry = tk.Entry()
@@ -59,7 +61,7 @@ def render_signup(home, repository:Repository, set_user, clear_page):
     sign_up_button = tk.Button(text="Sign Up", command=lambda: signup())
 
     # render
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     username_label.pack()
     username_entry.pack()

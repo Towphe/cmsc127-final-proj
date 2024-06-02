@@ -11,6 +11,7 @@ def render_establishment_reviews(username:str, establishment_reviews: pd.DataFra
         return
 
     welcome_message = tk.Label(text="Establishment Reviews")
+    welcome_message.config(font=("Helvetica", 12, "bold"))
     back_button = tk.Button(text="Back", command=lambda: home())
 
     # ADD SEARCH BAR 
@@ -59,7 +60,7 @@ def render_establishment_reviews(username:str, establishment_reviews: pd.DataFra
 
         row += 1
 
-    welcome_message.pack()
+    welcome_message.pack(pady=20)
     back_button.pack()
     table.pack()
 
@@ -70,17 +71,22 @@ def render_edit_establishment_review(review_id:int, establishment_id:int, establ
         repository.Establishment.update_establishment_review(review_id, establishment_id, content, rating)
         render_establishments()
 
+    review_details = repository.Establishment.get_establishment_review_by_id(review_id)
+
     back_button = tk.Button(text="Back", command=lambda: establishments())
     title = tk.Label(text="Edit Establishment Review")
+    title.config(font=("Helvetica", 12, "bold"))
 
     content_label = tk.Label(text="Content")
     content_entry = tk.Entry()
+    content_entry.insert(0, review_details['content'])
     rating_label = tk.Label(text="Rating")
     rating_entry = tk.Entry()
+    rating_entry.insert(0, review_details['rating'])
 
     edit_establishment_button = tk.Button(text="Confirm Changes", command=lambda: edit_establishment_review())
 
-    title.pack()
+    title.pack(pady=20)
     back_button.pack()
     content_label.pack()
     content_entry.pack()
