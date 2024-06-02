@@ -150,7 +150,6 @@ class app:
 
         render_edit_food_review(review_id, food_id, self.food_reviews,  repository, self.master, self.food_reviews)
     
-    # REPORTS
     def reports_root(self):
         self.clear_page()
         render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating, self.view_all_reviews, self.view_foods_from_establishment)
@@ -213,7 +212,7 @@ class app:
 
     def reports_root(self):
         self.clear_page()
-        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating, self.view_reviews_for_establishment, self.view_reviews_for_food_item, self.view_food_items_from_establishments, self.view_food_items_from_establishments_with_category, self.view_establishment_reviews_within_month, self.view_food_reviews_within_month, self.view_food_items_by_price, self.view_food_by_price_range_or_category)
+        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating, self.view_reviews_for_establishment, self.view_reviews_for_food_item, self.view_food_items_from_establishments, self.view_food_items_from_establishments_with_category, self.view_establishment_reviews_within_month, self.view_food_reviews_within_month, self.view_food_items_by_price, self.view_food_by_price_range_or_category, self.view_all_reviews, self.view_foods_from_establishment)
 
 root = tk.Tk()
 app(root)
