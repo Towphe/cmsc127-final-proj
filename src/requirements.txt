@@ -4,3 +4,4 @@ sqlalchemy
 mariadb
 pandastable
 pymysql
+python-dotenv
