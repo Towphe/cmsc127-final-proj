@@ -646,24 +646,34 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
         render_food_from_establishment_by_price(reports, clear_page, by_str.get(), int(eid))
     chosen_establishment = tk.StringVar()
     chosen_establishment.set("n/a")
+    filter_div = tk.LabelFrame()
 
     establishments = repository.Establishment.get_establishments()
     foods = repository.Reports.food_items_from_establishment_by_price(establishment_id, by)
     by_str = tk.StringVar()
     by_str.set(by)
+
     title = tk.Label(text="Foods by Price")
     title.config(font=("Helvetica", 12, "bold"))
-    back_button = tk.Button(text="Back", command=lambda: reports())
-    establishment_label = tk.Label(text="Entry Id")
+    back_button = tk.Button(filter_div, text="Back", command=lambda: reports())
+    back_button.grid(row=0, column=0, sticky="ew")
+    establishment_label = tk.Label(filter_div, text="Entry Id")
+    establishment_label.grid(row=0, column=1, sticky="ew")
+
     establishment_options = []
     for establishment in establishments.to_numpy():
         print(establishment)
         establishment_options.append(f"{establishment[0]} - {establishment[2]}")
-    establishment_id_entry = tk.OptionMenu(None, chosen_establishment, *establishment_options)
-    sort_label = tk.Label(text="By")
+    
+    establishment_id_entry = tk.OptionMenu(filter_div, chosen_establishment, *establishment_options)
+    establishment_id_entry.grid(row=0, column=2, sticky="ew")
+    sort_label = tk.Label(filter_div, text="By")
+    sort_label.grid(row=0, column=3, sticky="ew")
     options = ['ASC', 'DESC']
-    sort_entry = tk.OptionMenu(None, by_str, *options)
-    search_button = tk.Button(text="Search", command=lambda: search_food())
+    sort_entry = tk.OptionMenu(filter_div, by_str, *options)
+    sort_entry.grid(row=0, column=4, sticky="ew")
+    search_button = tk.Button(filter_div, text="Search", command=lambda: search_food())
+    search_button.grid(row=0, column=5, sticky="ew")
     table = tk.LabelFrame()
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
@@ -694,12 +704,7 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
         row += 1
 
     title.pack(pady=20)
-    back_button.pack()
-    establishment_label.pack()
-    establishment_id_entry.pack()
-    sort_label.pack()
-    sort_entry.pack()
-    search_button.pack()
+    filter_div.pack()
     table.pack()
 
 def render_food_by_range_and_category(reports, clear_page, min_price:float = None, max_price:float = None, category:str = None):
