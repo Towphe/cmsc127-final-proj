@@ -23,12 +23,13 @@ def render_reports_root(home, view_all_food_establishments, view_establishments_
     title.pack()
     back_button.pack()
     view_all_establishments.pack()
-    view_high_rated.pack()
     view_establishments_review.pack()
     view_foods_review.pack()
     view_food_from_establishment.pack()
     view_food_from_establishments_with_category.pack()
+    view_high_rated.pack()
     view_establishment_reviews.pack()
+    
     view_food_reviews.pack()
     view_food_by_price.pack()
     view_food_by_range_and_category.pack()
@@ -379,17 +380,28 @@ def render_food_items_from_establishment(reports, clear_page, establishments, es
 
 def render_food_items_from_establishment_with_category(reports, clear_page, establishment_id = 0, category = ""):
     def search_food():
-        eid = establishment_id_entry.get()
+        eid = chosen_establishment.get()
+        eid = int(eid.split(" - ")[0])
         c = category_entry.get()
         clear_page()
         render_food_items_from_establishment_with_category(reports, clear_page, int(eid), c)
-    
+
+    chosen_establishment = tk.StringVar()
+    chosen_establishment.set("n/a")
+
+    establishments = repository.Establishment.get_establishments()
     foods = repository.Reports.food_item_from_establishment_from_category(establishment_id, category)
     
     title = tk.Label(text="Food from Establishment with Category")
     back_button = tk.Button(text="Back", command=lambda: reports())
     establishment_label = tk.Label(text="Entry Id")
-    establishment_id_entry = tk.Entry()
+    establishment_options = []
+    for establishment in establishments.to_numpy():
+        print(establishment)
+        establishment_options.append(f"{establishment[0]} - {establishment[2]}")
+    # establishment_id_entry = tk.Entry()
+    establishment_id_entry = tk.OptionMenu(None, chosen_establishment, *establishment_options)
+    
     category_entry_label = tk.Label(text="Category")
     category_entry = tk.Entry()
     search_button = tk.Button(text="Search", command=lambda: search_food())
@@ -433,7 +445,8 @@ def render_food_items_from_establishment_with_category(reports, clear_page, esta
 
 def render_establishment_reviews_within_month(reports, clear_page, month:int, year:int, establishment_id:int=0):
     def search_establishment():
-        eid = establishment_id_entry.get()
+        eid = chosen_establishment.get()
+        eid = int(eid.split(" - ")[0])
         d = datetime.datetime.now()
 
         m = month_entry.get()
@@ -446,17 +459,32 @@ def render_establishment_reviews_within_month(reports, clear_page, month:int, ye
         
         clear_page()
         render_establishment_reviews_within_month(reports, clear_page, m, y, int(eid))
-    
+    dt = datetime.datetime.now()
+    chosen_establishment = tk.StringVar()
+    chosen_establishment.set("n/a")
+
+    establishments = repository.Establishment.get_establishments()
     reviews = repository.Reports.establishment_reviews_within_month(establishment_id, month, year)
     
     title = tk.Label(text="Establishment Reviews within Month")
     back_button = tk.Button(text="Back", command=lambda: reports())
     establishment_id_label = tk.Label(text="Entry Id")
-    establishment_id_entry = tk.Entry()
+
+    establishment_options = []
+    for establishment in establishments.to_numpy():
+        print(establishment)
+        establishment_options.append(f"{establishment[0]} - {establishment[2]}")
+
+    # establishment_id_entry = tk.Entry()
+    establishment_id_entry = tk.OptionMenu(None, chosen_establishment, *establishment_options)
     month_label = tk.Label(text="Month")
     month_entry = tk.Entry()
+    month_entry.insert(0, dt.month)
+
     year_label = tk.Label(text="Year")
     year_entry = tk.Entry()
+    year_entry.insert(0, dt.year)
+
     search_button = tk.Button(text="Search", command=lambda: search_establishment())
     table = tk.LabelFrame()
 
@@ -484,7 +512,6 @@ def render_establishment_reviews_within_month(reports, clear_page, month:int, ye
 
         row += 1
 
-
     title.pack()
     back_button.pack()
     establishment_id_label.pack()
@@ -498,7 +525,8 @@ def render_establishment_reviews_within_month(reports, clear_page, month:int, ye
 
 def render_food_reviews_within_month(reports, clear_page, month:int, year:int, establishment_id:int=0):
     def search_food_reviews():
-        fid = food_id_entry.get()
+        fid = chosen_food.get()
+        fid = int(fid.split(" - ")[0])
         d = datetime.datetime.now()
 
         m = month_entry.get()
@@ -510,14 +538,25 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
         else: y = int(y)
         
         clear_page()
-        render_establishment_reviews_within_month(reports, clear_page, m, y, int(fid))
+        render_food_reviews_within_month(reports, clear_page, m, y, int(fid))
     
+    chosen_food = tk.StringVar()
+    chosen_food.set("n/a")
+
+    foods = repository.Food.get_food()
     reviews = repository.Reports.food_reviews_within_month(establishment_id, month, year)
     
     title = tk.Label(text="Food Reviews within Month")
     back_button = tk.Button(text="Back", command=lambda: reports())
+
+    food_options = []
+    for food in foods.to_numpy():
+        print(food)
+        food_options.append(f"{food[0]} - {food[4]}")
+
     food_id_label = tk.Label(text="Entry Id")
-    food_id_entry = tk.Entry()
+    # food_id_entry = tk.Entry()
+    food_id_entry = tk.OptionMenu(None, chosen_food, *food_options)
     month_label = tk.Label(text="Month")
     month_entry = tk.Entry()
     year_label = tk.Label(text="Year")
@@ -563,11 +602,16 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
 
 def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC', establishment_id:int = 0):
     def search_food():
-        eid = establishment_id_entry.get()
+        eid = chosen_establishment.get()
+        eid = int(eid.split(" - ")[0])
         
         clear_page()
         render_food_from_establishment_by_price(reports, clear_page, by_str.get(), int(eid))
     
+    chosen_establishment = tk.StringVar()
+    chosen_establishment.set("n/a")
+
+    establishments = repository.Establishment.get_establishments()
     foods = repository.Reports.food_items_from_establishment_by_price(establishment_id, by)
     by_str = tk.StringVar()
     by_str.set(by)
@@ -575,7 +619,11 @@ def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC',
     title = tk.Label(text="Foods by Price")
     back_button = tk.Button(text="Back", command=lambda: reports())
     establishment_label = tk.Label(text="Entry Id")
-    establishment_id_entry = tk.Entry()
+    establishment_options = []
+    for establishment in establishments.to_numpy():
+        print(establishment)
+        establishment_options.append(f"{establishment[0]} - {establishment[2]}")
+    establishment_id_entry = tk.OptionMenu(None, chosen_establishment, *establishment_options)
     sort_label = tk.Label(text="By")
     options = ['ASC', 'DESC']
     sort_entry = tk.OptionMenu(None, by_str, *options)

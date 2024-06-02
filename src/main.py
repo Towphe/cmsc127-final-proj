@@ -128,6 +128,11 @@ class app:
     
     def my_establishment_reviews(self):
         self.clear_page()
+
+        if self.username == None:
+            self.home()
+            return
+
         establishment_reviews:pd.DataFrame = repository.Establishment.get_all_establishment_reviews_by(self.username)
         render_establishment_reviews(self.username, establishment_reviews, self.home, self.master, self.edit_establishment_review, repository, self.clear_page, self.my_establishment_reviews)
 
@@ -143,6 +148,7 @@ class app:
     # FOOD REVIEWS
     def food_reviews(self):
         self.clear_page()
+
         food_reviews:pd.DataFrame = repository.Food.get_all_food_reviews()
         render_food_reviews(self.username, food_reviews, self.home, self.master, self.edit_food_review, repository, self.clear_page, self.food_reviews)
 
@@ -157,6 +163,11 @@ class app:
     
     def my_food_reviews(self):
         self.clear_page()
+
+        if self.username == None:
+            self.home()
+            return
+
         food_reviews:pd.DataFrame = repository.Food.get_all_food_reviews_by(self.username)
         render_food_reviews(self.username, food_reviews, self.home, self.master, self.edit_food_review, repository, self.clear_page, self.my_food_reviews)
     
