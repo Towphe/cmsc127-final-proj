@@ -37,11 +37,11 @@ class FoodHandler:
             con.commit()
         return
     
-    def create_food_review(self, food_id:int, establishment_id:int, reviewer:str, content:str, rating:float):
+    def create_food_review(self, food_id:int, reviewer:str, content:str, rating:float):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
-                            INSERT INTO food_review (food_id, establishment_id, reviewer_username, content, rating)
-                            VALUES ({food_id}, {establishment_id}, '{reviewer}', '{content}', {rating});
+                            INSERT INTO food_review (food_id, reviewer_username, content, rating)
+                            VALUES ({food_id}, '{reviewer}', '{content}', {rating});
                         '''))
             con.commit()
             con.execute(text(f'''

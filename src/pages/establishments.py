@@ -3,7 +3,6 @@ import pandas as pd
 from util.repository import Repository
 
 def render_establishments(username:str, establishments: pd.DataFrame, add_establishment, home, window:tk.Tk, redirect_to_edit_establishment, redirect_to_review_establishment, repository:Repository, clear_page, redirect_to_establishments):
-    
     def delete_establishment(establishment_id:int):
         repository.Establishment.remove_establishment(establishment_id)
         clear_page()
