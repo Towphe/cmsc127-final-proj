@@ -16,6 +16,7 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
             
             id_label = tk.Label(table, text=str(food['food_id']), anchor="w")
             establishment_id_label = tk.Label(table, text=str(food['establishment_id']), anchor="w")
+            establishment_name_label = tk.Label(table, text=str(food['establishment_name']), anchor="w")
             name_label = tk.Label(table, text=food['food_name'], anchor="w")
             category_label = tk.Label(table, text=food['category'], anchor="w")
             price_label = tk.Label(table, text=food['price'], anchor="w")
@@ -34,13 +35,14 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
             # render rows
             id_label.grid(row=row, column=0, sticky="ew")
             establishment_id_label.grid(row=row, column=1, sticky="ew")
-            name_label.grid(row=row, column=2, sticky="ew")
-            category_label.grid(row=row, column=3, sticky="ew")
-            price_label.grid(row=row, column=4, sticky="ew")
-            average_rating_label.grid(row=row, column=5, sticky="ew")
-            edit_button.grid(row=row, column=6, sticky="ew")
-            delete_button.grid(row=row, column=7, sticky="ew")
-            review_button.grid(row=row, column=8, sticky="ew")
+            establishment_name_label.grid(row=row, column=2, sticky="ew")
+            name_label.grid(row=row, column=3, sticky="ew")
+            category_label.grid(row=row, column=4, sticky="ew")
+            price_label.grid(row=row, column=5, sticky="ew")
+            average_rating_label.grid(row=row, column=6, sticky="ew")
+            edit_button.grid(row=row, column=7, sticky="ew")
+            delete_button.grid(row=row, column=8, sticky="ew")
+            review_button.grid(row=row, column=9, sticky="ew")
 
             row += 1
     
@@ -75,13 +77,14 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
     tk.Label(table, text="Establishment Id", anchor="w").grid(row=0, column=1, sticky="ew")
-    tk.Label(table, text="Name", anchor="w").grid(row=0, column=2, sticky="ew")
-    tk.Label(table, text="Category", anchor="w").grid(row=0, column=3, sticky="ew")
-    tk.Label(table, text="Price", anchor="w").grid(row=0, column=4, sticky="ew")
-    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=5, sticky="ew")
-    tk.Label(table, text="Edit", anchor="w").grid(row=0, column=6, sticky="ew")
-    tk.Label(table, text="Delete", anchor="w").grid(row=0, column=7, sticky="ew")
-    tk.Label(table, text="Review", anchor="w").grid(row=0, column=8, sticky="ew")
+    tk.Label(table, text="Establishment Name", anchor="w").grid(row=0, column=2, sticky="ew")
+    tk.Label(table, text="Name", anchor="w").grid(row=0, column=3, sticky="ew")
+    tk.Label(table, text="Category", anchor="w").grid(row=0, column=4, sticky="ew")
+    tk.Label(table, text="Price", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=6, sticky="ew")
+    tk.Label(table, text="Edit", anchor="w").grid(row=0, column=7, sticky="ew")
+    tk.Label(table, text="Delete", anchor="w").grid(row=0, column=8, sticky="ew")
+    tk.Label(table, text="Review", anchor="w").grid(row=0, column=9, sticky="ew")
 
     # Pre-load all foods
     load_foods_on_table(foods)
@@ -102,6 +105,8 @@ def render_add_food_item(username:str, foods, repository:Repository, window:tk.T
         category = category_entry.get()
         repository.Food.add_food(int(establishment_id), food_name, float(price), category)
         render_foods()
+    
+    category_options = ["Appetizer", "Meal", "Dessert"]
     
     back_button = tk.Button(text="Back", command=lambda: foods())
     title = tk.Label(text="Add New Food Item")

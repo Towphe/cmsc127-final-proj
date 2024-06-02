@@ -21,7 +21,7 @@ class ReportsHandler:
                             UNION
                             
                             SELECT establishment_name AS review_for, reviewer_username, content, rating, date_created 
-                            FROM food_review NATURAL JOIN establishment''', con=self.db_connection)
+                            FROM establishment_review NATURAL JOIN establishment''', con=self.db_connection)
         return reviews
         
     def all_food_items_from_establishment(self, establishment_id:int):
@@ -69,7 +69,7 @@ class ReportsHandler:
         return foods
     
     def food_by_price_range_and_category(self, category:str, min_price:float, max_price:float):
-        foods = pd.read_sql(f"SELECT * FROM food_item WHERE (category = '{category}' AND (price BETWEEN {min_price} AND {max_price}) ", con=self.db_connection)
+        foods = pd.read_sql(f"SELECT * FROM food_item WHERE category = '{category}' AND price BETWEEN {min_price} AND {max_price} ", con=self.db_connection)
         return foods
 
     def food_by_price_range_and_or_category(self, category:str, min_price:float, max_price:float):

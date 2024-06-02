@@ -63,6 +63,10 @@ class FoodHandler:
         all_food_reviews = pd.read_sql(f"SELECT fr.review_id, fi.establishment_id, fr.food_id, fr.reviewer_username, fr.content, fr.rating, fr.date_created FROM food_review fr NATURAL JOIN food_item fi", con=self.db_connection)
         return all_food_reviews
     
+    def get_all_food_reviews_by(self, username:str):
+        all_food_reviews = pd.read_sql(f"SELECT fr.review_id, fi.establishment_id, fr.food_id, fr.reviewer_username, fr.content, fr.rating, fr.date_created FROM food_review fr NATURAL JOIN food_item fi WHERE reviewer_username='{username}'", con=self.db_connection)
+        return all_food_reviews
+    
     def update_food_review(self, review_id:int, food_id:int, content:str, rating:float):
         with self.db_connection.connect() as con:
             con.execute(text(f'''
