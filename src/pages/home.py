@@ -1,6 +1,6 @@
 import tkinter as tk
 
-def render_home(username, render_establishments, render_foods, render_signin, render_signup, signout, render_reports, render_establishment_reviews, render_food_reviews):
+def render_home(username, render_establishments, render_foods, render_signin, render_signup, signout, render_reports, render_my_establishment_reviews, render_my_food_reviews):
     # define elements
 
     welcome_message = tk.Label(text="Welcome!")
@@ -8,8 +8,8 @@ def render_home(username, render_establishments, render_foods, render_signin, re
     establishments_button = tk.Button(text="Establishments", command=lambda: render_establishments())
     foods_button = tk.Button(text="Foods", command=lambda: render_foods())
     reports = tk.Button(text="Reports", command=lambda: render_reports())
-    establishment_reviews_button = tk.Button(text="Establishment Reviews", command=lambda: render_establishment_reviews())
-    food_reviews_button = tk.Button(text="Food Reviews", command=lambda: render_food_reviews())
+    establishment_reviews_button = tk.Button(text="My Establishment Reviews", command=lambda: render_my_establishment_reviews())
+    food_reviews_button = tk.Button(text="My Food Reviews", command=lambda: render_my_food_reviews())
 
     signin_button = tk.Button(text="Sign In", command=lambda: render_signin())
     signup_button = tk.Button(text="Sign Up", command=lambda: render_signup())

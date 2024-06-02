@@ -6,13 +6,11 @@ import datetime
 
 repository = Repository()
 
-def render_reports_root(home, view_all_food_establishments, view_establishments_with_high_rating, view_reviews_of_establishment, view_reviews_of_food, view_food_items_from_establishments, view_food_items_from_establishments_with_category, view_establishment_reviews_within_month, view_food_reviews_within_month, view_food_items_by_price, view_food_by_price_range_or_category, view_all_reviews, view_foods_from_establishment):
+def render_reports_root(home, view_all_food_establishments, view_establishments_with_high_rating, view_reviews_of_establishment, view_reviews_of_food, view_food_items_from_establishments, view_food_items_from_establishments_with_category, view_establishment_reviews_within_month, view_food_reviews_within_month, view_food_items_by_price, view_food_by_price_range_or_category):
     title = tk.Label(text="Reports")
     back_button = tk.Button(text="Back", command=lambda: home())
     view_all_establishments = tk.Button(text="View All Food Establishments", command=lambda: view_all_food_establishments())
     view_high_rated = tk.Button(text="View All Food Establishments with High Ratings", command=lambda: view_establishments_with_high_rating())
-    view_all_reviews_button = tk.Button(text="View All Reviews", command=lambda: view_all_reviews())
-    foods_from_establishment_button = tk.Button(text="Food from establishment", command=lambda: view_foods_from_establishment())
     view_establishments_review = tk.Button(text="Reviews of Establishment", command=lambda: view_reviews_of_establishment())
     view_foods_review = tk.Button(text="Reviews of Foods", command=lambda: view_reviews_of_food())
     view_food_from_establishment = tk.Button(text="Food Items from Establishment", command=lambda: view_food_items_from_establishments())
@@ -26,8 +24,6 @@ def render_reports_root(home, view_all_food_establishments, view_establishments_
     back_button.pack()
     view_all_establishments.pack()
     view_high_rated.pack()
-    view_all_reviews_button.pack()
-    foods_from_establishment_button.pack()
     view_establishments_review.pack()
     view_foods_review.pack()
     view_food_from_establishment.pack()
@@ -159,103 +155,46 @@ def render_establishments_with_high_average_ratings(reports, establishments):
     title.pack()
     back_button.pack()
     table.pack()
-
-def render_foods_from_establishment(reports, establishments, foods, repository):
-    def load_foods_on_table(foods):
-        # Render all food items
-        row = 1
-        for i in range(foods.shape[0]):
-            food = foods.iloc[i]
-            
-            id_label = tk.Label(table, text=str(food['food_id']), anchor="w")
-            establishment_id_label = tk.Label(table, text=str(food['establishment_id']), anchor="w")
-            name_label = tk.Label(table, text=food['food_name'], anchor="w")
-            category_label = tk.Label(table, text=food['category'], anchor="w")
-            price_label = tk.Label(table, text=food['price'], anchor="w")
-            average_rating_label = tk.Label(table, text=food['average_rating'], anchor="w")  
-            # render rows
-            id_label.grid(row=row, column=0, sticky="ew")
-            establishment_id_label.grid(row=row, column=1, sticky="ew")
-            name_label.grid(row=row, column=2, sticky="ew")
-            category_label.grid(row=row, column=3, sticky="ew")
-            price_label.grid(row=row, column=4, sticky="ew")
-            average_rating_label.grid(row=row, column=5, sticky="ew")
-
-            row += 1
     
-    def empty_table():
-        for row in table.winfo_children():
-            count = 0
-            table.winfo_children()[count].destroy()
-            count = count + 1
-        
-    def searchFood(e):
+def render_reviews_for_establishment(reports, clear_page, establishments,establishment_id = 0, search_key=''):
+    all_establishments = establishments['establishment_name'].tolist()
+
+    def search_establishment_reviews():
         name = search_bar.get()
-        empty_table()
-        
+
+        if name in establishments['establishment_name'].values:
+            # Get establishment id
+            eid = establishments.loc[establishments['establishment_name'] == name, 'establishment_id'].iloc[0]
+        else:
+            eid = 0
+
+        clear_page()
+        render_reviews_for_establishment(reports, clear_page, establishments, eid, name)
+
+    def search(e):
+        name = search_bar.get()
         if name == '':
             # If the input is empty, show the full list
-            data = foods
-            load_foods_on_table(data)
+            search_bar['values'] = all_establishments
 
-        elif (name in establishments['establishment_name'].values):
-            # Get id of selected item
-            id = establishments.loc[establishments['establishment_name'] == name, 'establishment_id'].iloc[0]
-            # Show food items from establishment id
-            data:pd.DataFrame = repository.Reports.all_food_items_from_establishment(id)
-            
-            load_foods_on_table(data)
-
-    welcome_message = tk.Label(text="Food View")
-    search_bar = ttk.Combobox(value=establishments['establishment_name'].tolist())
-
-    # Search data frame every key release and change in choices
-    search_bar.bind("<KeyRelease>", searchFood)
-    search_bar.bind("<<ComboboxSelected>>", searchFood)
-
-    back_button = tk.Button(text="Back", command=lambda: reports())
-    table = tk.LabelFrame() 
-    # Pre-load all foods
-    load_foods_on_table(foods)
-
-    row = 1
-    for i in range(foods.shape[0]):
-        food = foods.iloc[i]
-        id_label = tk.Label(table, text=str(food['food_id']), anchor="w")
-        establishment_id_label = tk.Label(table, text=str(food['establishment_id']), anchor="w")
-        name_label = tk.Label(table, text=food['food_name'], anchor="w")
-        category_label = tk.Label(table, text=food['category'], anchor="w")
-        price_label = tk.Label(table, text=food['price'], anchor="w")
-        average_rating_label = tk.Label(table, text=food['average_rating'], anchor="w")
-
-        # render rows
-        id_label.grid(row=row, column=0, sticky="ew")
-        establishment_id_label.grid(row=row, column=1, sticky="ew")
-        name_label.grid(row=row, column=2, sticky="ew")
-        category_label.grid(row=row, column=3, sticky="ew")
-        price_label.grid(row=row, column=4, sticky="ew")
-        average_rating_label.grid(row=row, column=5, sticky="ew")
-
-        row += 1
-
-    welcome_message.pack()
-    back_button.pack()
-    search_bar.pack()
-    table.pack()
-    
-def render_reviews_for_establishment(reports, clear_page, establishment_id = 0):
-    def search_establishment_reviews():
-        eid = establishment_id_entry.get()
-        clear_page()
-        render_reviews_for_establishment(reports, clear_page, int(eid))
+        else:
+            data = []
+            for item in all_establishments:
+                if name.lower() in item.lower():
+                    data.append(item)
+            search_bar['values'] = data
 
     reviews = repository.Reports.reviews_for_establishment(establishment_id)
 
     title = tk.Label(text="Establishments Reviews")
     back_button = tk.Button(text="Back", command=lambda: reports())
-    establishment_id_label = tk.Label(text="Entry Id")
-    establishment_id_entry = tk.Entry()
+    establishment_name_label = tk.Label(text="Enter Establishment Name")
+
+    search_bar = ttk.Combobox(value=all_establishments)
+    search_bar.set(search_key)
+    search_bar.bind("<KeyRelease>", search)
     search_button = tk.Button(text="Search", command=lambda: search_establishment_reviews())
+
     table = tk.LabelFrame()
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
@@ -280,30 +219,56 @@ def render_reviews_for_establishment(reports, clear_page, establishment_id = 0):
         content_label.grid(row=row, column=2, sticky="ew")
         rating_label.grid(row=row, column=3, sticky="ew")
         date_created_label.grid(row=row, column=4, sticky="ew")
-
         row += 1
 
 
     title.pack()
     back_button.pack()
-    establishment_id_label.pack()
-    establishment_id_entry.pack()
+    establishment_name_label.pack()
+    search_bar.pack()
     search_button.pack()
     table.pack()
 
-def render_reviews_for_food_item(reports, clear_page, food_id = 0):
-    def search_food_review():
-        fid = food_id_entry.get()
+def render_reviews_for_food_item(reports, clear_page, foods, food_id = 0, search_key=''):
+    all_foods = foods['food_name'].tolist()
+
+    def search_food_review():        
+        food_name = search_bar.get()
+
+        if food_name in foods['food_name'].values:
+            # Get food id
+            fid = foods.loc[foods['food_name'] == food_name, 'food_id'].iloc[0]
+        else:
+            fid = 0
+        
         clear_page()
-        render_reviews_for_establishment(reports, clear_page, int(fid))
+        render_reviews_for_food_item(reports, clear_page,foods, int(fid), food_name)
+    
+    def search(e):
+        name = search_bar.get()
+        if name == '':
+            # If the input is empty, show the full list
+            search_bar['values'] = all_foods
+
+        else:
+            data = []
+            for item in all_foods:
+                if name.lower() in item.lower():
+                    data.append(item)
+            search_bar['values'] = data
+
 
     reviews = repository.Reports.reviews_for_food_item(food_id)
 
     title = tk.Label(text="Food Reviews")
     back_button = tk.Button(text="Back", command=lambda: reports())
-    food_id_label = tk.Label(text="Entry Id")
-    food_id_entry = tk.Entry()
+    food_name_label = tk.Label(text="Food Name")
+
+    search_bar = ttk.Combobox(value=all_foods)
+    search_bar.set(search_key)
+    search_bar.bind("<KeyRelease>", search)
     search_button = tk.Button(text="Search", command=lambda: search_food_review())
+
     table = tk.LabelFrame()
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
@@ -333,24 +298,49 @@ def render_reviews_for_food_item(reports, clear_page, food_id = 0):
 
     title.pack()
     back_button.pack()
-    food_id_label.pack()
-    food_id_entry.pack()
+    food_name_label.pack()
+    search_bar.pack()
     search_button.pack()
     table.pack()
 
-def render_food_items_from_establishment(reports, clear_page, establishment_id = 0):
+def render_food_items_from_establishment(reports, clear_page, establishments, establishment_id = 0, search_key=''):
+    all_establishments = establishments['establishment_name'].tolist()
+
     def search_food():
-        eid = establishment_id_entry.get()
+        name = search_bar.get()
+
+        if name in establishments['establishment_name'].values:
+            # Get establishment id
+            eid = establishments.loc[establishments['establishment_name'] == name, 'establishment_id'].iloc[0]
+        else:
+            eid = 0
+
         clear_page()
-        render_food_items_from_establishment(reports, clear_page, int(eid))
+        render_food_items_from_establishment(reports, clear_page, establishments, int(eid), name)
     
+    def search(e):
+        name = search_bar.get()
+        if name == '':
+            # If the input is empty, show the full list
+            search_bar['values'] = all_establishments
+
+        else:
+            data = []
+            for item in all_establishments:
+                if name.lower() in item.lower():
+                    data.append(item)
+            search_bar['values'] = data
+
     foods = repository.Reports.food_items_from_establishment(establishment_id)
-    
     title = tk.Label(text="Foods from Establishment")
     back_button = tk.Button(text="Back", command=lambda: reports())
-    establishment_label = tk.Label(text="Entry Id")
-    establishment_id_entry = tk.Entry()
+
+    establishment_label = tk.Label(text="Establishment Name")
+    search_bar = ttk.Combobox(value=all_establishments)
+    search_bar.set(search_key)
+    search_bar.bind("<KeyRelease>", search)
     search_button = tk.Button(text="Search", command=lambda: search_food())
+
     table = tk.LabelFrame()
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
@@ -383,7 +373,7 @@ def render_food_items_from_establishment(reports, clear_page, establishment_id =
     title.pack()
     back_button.pack()
     establishment_label.pack()
-    establishment_id_entry.pack()
+    search_bar.pack()
     search_button.pack()
     table.pack()
 
