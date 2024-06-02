@@ -13,13 +13,22 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
         repository.Food.remove_food(food_id)
         clear_page()
         redirect_to_food_items_view()
-        return
 
-
+    filter_div = tk.LabelFrame()
     welcome_message = tk.Label(text="Food View")
-    search_bar = tk.Entry()
-    name = tk.Entry()
-    search_button = tk.Button(text="Search", command=lambda: search_food_item())
+
+    back_button = tk.Button(filter_div, text="Back", command=lambda: home())
+    back_button.grid(row=0, column=0, sticky="ew")
+
+    search_label = tk.Label(filter_div, text="Name:")
+    search_label.grid(row=0, column=1, sticky="ew")
+
+    search_bar = tk.Entry(filter_div)
+    search_bar.grid(row=0, column=2, sticky="ew")
+    
+    search_button = tk.Button(filter_div, text="Search", command=lambda: search_food_item())
+    search_button.grid(row=0, column=3, sticky="ew")
+
     add_button = tk.Button(text="Add New Food Item", command=lambda: add_food())
 
 
@@ -63,10 +72,6 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
 
         row += 1
 
-    back_button = tk.Button(text="Back", command=lambda: home())
-
-    
-
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
     tk.Label(table, text="Establishment Id", anchor="w").grid(row=0, column=1, sticky="ew")
     tk.Label(table, text="Establishment Name", anchor="w").grid(row=0, column=2, sticky="ew")
@@ -80,9 +85,7 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
 
 
     welcome_message.pack()
-    back_button.pack()
-    search_bar.pack()
-    search_button.pack()
+    filter_div.pack()
     table.pack()
     add_button.pack()
 

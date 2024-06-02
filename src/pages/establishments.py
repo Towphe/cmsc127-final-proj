@@ -14,11 +14,20 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
         clear_page()
         render_establishments(username, establishments, add_establishment, home, window, redirect_to_edit_establishment, redirect_to_review_establishment, repository, clear_page, redirect_to_establishments, name )
 
-
+    filter_div = tk.LabelFrame()
     welcome_message = tk.Label(text="Establishments View")
-    back_button = tk.Button(text="Back", command=lambda: home())
-    search_bar = tk.Entry()
-    search_button = tk.Button(text="Search", command=lambda: search_establishment())
+
+    back_button = tk.Button(filter_div, text="Back", command=lambda: home())
+    back_button.grid(row=0, column=0, sticky="ew")
+    
+    search_label = tk.Label(filter_div, text="Name:")
+    search_label.grid(row=0, column=1, sticky="ew")
+
+    search_bar = tk.Entry(filter_div)
+    search_bar.grid(row=0, column=2, sticky="ew")
+
+    search_button = tk.Button(filter_div, text="Search", command=lambda: search_establishment())
+    search_button.grid(row=0, column=3, sticky="ew")
 
     # render table
     table = tk.LabelFrame()
@@ -68,9 +77,7 @@ def render_establishments(username:str, establishments: pd.DataFrame, add_establ
     add_button = tk.Button(text="Add New Establishment", command=lambda: add_establishment())
 
     welcome_message.pack()
-    back_button.pack()
-    search_bar.pack()
-    search_button.pack()
+    filter_div.pack()
     table.pack()
     add_button.pack()
 
