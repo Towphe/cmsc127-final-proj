@@ -177,6 +177,44 @@ class app:
 
         render_foods_from_establishment(self.reports_root, establishments, food_items, repository)
 
+    def view_reviews_for_establishment(self):
+        self.clear_page()
+        render_reviews_for_establishment(self.reports_root, self.clear_page)
+
+    def view_reviews_for_food_item(self):
+        self.clear_page()
+        render_reviews_for_food_item(self.reports_root, self.clear_page)
+
+    def view_food_items_from_establishments(self):
+        self.clear_page()
+        render_food_items_from_establishment(self.reports_root, self.clear_page)
+
+    def view_food_items_from_establishments_with_category(self):
+        self.clear_page()
+        render_food_items_from_establishment_with_category(self.reports_root, self.clear_page)
+
+    def view_establishment_reviews_within_month(self):
+        self.clear_page()
+        d = datetime.datetime.now()
+        render_establishment_reviews_within_month(self.reports_root, self.clear_page, d.month, d.year)
+
+    def view_food_reviews_within_month(self):
+        self.clear_page()
+        d = datetime.datetime.now()
+        render_food_reviews_within_month(self.reports_root, self.clear_page, d.month, d.year)
+
+    def view_food_items_by_price(self):
+        self.clear_page()
+        render_food_from_establishment_by_price(self.reports_root, self.clear_page)
+    
+    def view_food_by_price_range_or_category(self):
+        self.clear_page()
+        render_food_by_range_and_category(self.reports_root, self.clear_page)
+
+    def reports_root(self):
+        self.clear_page()
+        render_reports_root(self.home, self.view_all_food_establishments, self.view_establishments_with_high_rating, self.view_reviews_for_establishment, self.view_reviews_for_food_item, self.view_food_items_from_establishments, self.view_food_items_from_establishments_with_category, self.view_establishment_reviews_within_month, self.view_food_reviews_within_month, self.view_food_items_by_price, self.view_food_by_price_range_or_category)
+
 root = tk.Tk()
 app(root)
 root.mainloop()
