@@ -542,26 +542,35 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
     
     chosen_food = tk.StringVar()
     chosen_food.set("n/a")
+    filter_div = tk.LabelFrame()
 
     foods = repository.Food.get_food()
     reviews = repository.Reports.food_reviews_within_month(establishment_id, month, year)
     
     title = tk.Label(text="Food Reviews within Month")
-    back_button = tk.Button(text="Back", command=lambda: reports())
+    back_button = tk.Button(filter_div, text="Back", command=lambda: reports())
+    back_button.grid(row=0, column=0, sticky="ew")
 
     food_options = []
     for food in foods.to_numpy():
         print(food)
         food_options.append(f"{food[0]} - {food[4]}")
 
-    food_id_label = tk.Label(text="Entry Id")
+    food_id_label = tk.Label(filter_div, text="Entry Id")
+    food_id_label.grid(row=0, column=1, sticky="ew")
     # food_id_entry = tk.Entry()
-    food_id_entry = tk.OptionMenu(None, chosen_food, *food_options)
-    month_label = tk.Label(text="Month")
-    month_entry = tk.Entry()
-    year_label = tk.Label(text="Year")
-    year_entry = tk.Entry()
-    search_button = tk.Button(text="Search", command=lambda: search_food_reviews())
+    food_id_entry = tk.OptionMenu(filter_div, chosen_food, *food_options)
+    food_id_entry.grid(row=0, column=2, sticky="ew")
+    month_label = tk.Label(filter_div, text="Month")
+    month_label.grid(row=0, column=3, sticky="ew")
+    month_entry = tk.Entry(filter_div)
+    month_entry.grid(row=0, column=4, sticky="ew")
+    year_label = tk.Label(filter_div, text="Year")
+    year_label.grid(row=0, column=5, sticky="ew")
+    year_entry = tk.Entry(filter_div)
+    year_entry.grid(row=0, column=6, sticky="ew")
+    search_button = tk.Button(filter_div, text="Search", command=lambda: search_food_reviews())
+    search_button.grid(row=0, column=7, sticky="ew")
     table = tk.LabelFrame()
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
@@ -590,14 +599,7 @@ def render_food_reviews_within_month(reports, clear_page, month:int, year:int, e
 
 
     title.pack()
-    back_button.pack()
-    food_id_label.pack()
-    food_id_entry.pack()
-    month_label.pack()
-    month_entry.pack()
-    year_label.pack()
-    year_entry.pack()
-    search_button.pack()
+    filter_div.pack()
     table.pack()
 
 def render_food_from_establishment_by_price(reports, clear_page, by:str = 'ASC', establishment_id:int = 0):
@@ -681,16 +683,28 @@ def render_food_by_range_and_category(reports, clear_page, min_price:float = Non
 
     foods = repository.Reports.food_by_price_range_and_or_category(category, min_price, max_price)
     
+
     title = tk.Label(text="View Foods by Price Range and/or Category")
-    back_button = tk.Button(text="Back", command=lambda: reports())
-    cat_label = tk.Label(text="Category")
-    cat_entry = tk.Entry()
-    min_price_label = tk.Label(text="Minimum Price")
-    min_price_entry = tk.Entry()
-    max_price_label = tk.Label(text="Maximum Price")
-    max_price_entry = tk.Entry()
-    search_button = tk.Button(text="Search", command=lambda: search_food())
     table = tk.LabelFrame()
+    filter_div = tk.LabelFrame()
+    
+    back_button = tk.Button(filter_div, text="Back", command=lambda: reports())
+    back_button.grid(row=0, column=0, sticky="ew")
+    cat_label = tk.Label(filter_div, text="Category")
+    cat_label.grid(row=0, column=1, sticky="ew")
+    cat_entry = tk.Entry(filter_div)
+    cat_entry.grid(row=0, column=2, sticky="ew")
+    min_price_label = tk.Label(filter_div, text="Minimum Price")
+    min_price_label.grid(row=0, column=3, sticky="ew")
+    min_price_entry = tk.Entry(filter_div)
+    min_price_entry.grid(row=0, column=4, sticky="ew")
+    max_price_label = tk.Label(filter_div, text="Maximum Price")
+    max_price_label.grid(row=0, column=5, sticky="ew")
+    max_price_entry = tk.Entry(filter_div)
+    max_price_entry.grid(row=0, column=6, sticky="ew")
+    search_button = tk.Button(filter_div, text="Search", command=lambda: search_food())
+    search_button.grid(row=0, column=7, sticky="ew")
+    
 
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
     tk.Label(table, text="Establishment Id", anchor="w").grid(row=0, column=1, sticky="ew")
@@ -720,13 +734,15 @@ def render_food_by_range_and_category(reports, clear_page, min_price:float = Non
         row += 1
 
     title.pack()
-    back_button.pack()
-    cat_label.pack()
-    cat_entry.pack()
-    min_price_label.pack()
-    min_price_entry.pack()
-    max_price_label.pack()
-    max_price_entry.pack()
     
-    search_button.pack()
+    # back_button.pack()
+    # cat_label.pack()
+    # cat_entry.pack()
+    # min_price_label.pack()
+    # min_price_entry.pack()
+    # max_price_label.pack()
+    # max_price_entry.pack()
+    
+    # search_button.pack()
+    filter_div.pack()
     table.pack()
