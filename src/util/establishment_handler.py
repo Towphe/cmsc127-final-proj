@@ -13,8 +13,8 @@ class EstablishmentHandler:
         establishments = pd.read_sql('SELECT * FROM establishment', con=self.db_connection)
         return establishments
     
-    def search_establishment(self, establishment_name:str):
-        establishments = pd.read_sql(f"SELECT * FROM establishment WHERE establishment_name LIKE '%{establishment_name}%'", con=self.db_connection)
+    def find_establishment_with_key(self, establishment_name:str):
+        establishments = pd.read_sql(f"SELECT * FROM establishment WHERE establishment_name LIKE '%%{establishment_name}%%'", con=self.db_connection)
         return establishments
     
     def add_establishment(self, added_by:str, establishment_name:str):

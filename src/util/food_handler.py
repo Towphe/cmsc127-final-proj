@@ -13,6 +13,11 @@ class FoodHandler:
         foods = pd.read_sql('SELECT food_id, e.establishment_id, added_by, establishment_name, food_name, price, category, fi.average_rating FROM food_item fi INNER JOIN establishment e ON fi.establishment_id = e.establishment_id;', con=self.db_connection)
         return foods
     
+    def find_food_with_key(self, key:str):
+        print(key)
+        foods = pd.read_sql(f"SELECT food_id, e.establishment_id, added_by, establishment_name, food_name, price, category, fi.average_rating FROM food_item fi INNER JOIN establishment e ON fi.establishment_id = e.establishment_id WHERE food_name LIKE '%%{key}%%';", con=self.db_connection)
+        return foods
+    
     def add_food(self, establishment_id:int, food_name:str, price:float, category:str):
         with self.db_connection.connect() as con:
             con.execute(text(f"INSERT INTO food_item (establishment_id, food_name, price, category) VALUES ({establishment_id}, '{food_name}', {price}, '{category}');"))
