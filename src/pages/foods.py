@@ -27,11 +27,12 @@ def render_foods(username:str, foods: pd.DataFrame, home, window:tk.Tk, reposito
     tk.Label(table, text="Id", anchor="w").grid(row=0, column=0, sticky="ew")
     tk.Label(table, text="Establishment Id", anchor="w").grid(row=0, column=1, sticky="ew")
     tk.Label(table, text="Name", anchor="w").grid(row=0, column=2, sticky="ew")
-    tk.Label(table, text="Category", anchor="w").grid(row=0, column=2, sticky="ew")
-    tk.Label(table, text="Price", anchor="w").grid(row=0, column=3, sticky="ew")
-    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=3, sticky="ew")
-    tk.Label(table, text="Edit", anchor="w").grid(row=0, column=4, sticky="ew")
-    tk.Label(table, text="Delete", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Category", anchor="w").grid(row=0, column=3, sticky="ew")
+    tk.Label(table, text="Price", anchor="w").grid(row=0, column=4, sticky="ew")
+    tk.Label(table, text="Average Rating", anchor="w").grid(row=0, column=5, sticky="ew")
+    tk.Label(table, text="Edit", anchor="w").grid(row=0, column=6, sticky="ew")
+    tk.Label(table, text="Delete", anchor="w").grid(row=0, column=7, sticky="ew")
+    tk.Label(table, text="Review", anchor="w").grid(row=0, column=8, sticky="ew")
 
     row = 1
     for i in range(foods.shape[0]):
